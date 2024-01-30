@@ -4,14 +4,20 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    {{-- flash login success message --}}
+    @if (session('loginMessage'))
+        <div class="max-w-7xl mx-auto pt-12">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
+                    {{ __(session('loginMessage')) }}
                 </div>
             </div>
         </div>
-    </div>
+        {{ session()->forget("loginMessage")}}
+        @endif
+        @if (request()->routeIs('dashboard.partners'))
+        <x-partners-table :partners="$partners"/>
+        @else
+        <x-adverts-table/>
+        @endif
 </x-app-layout>
