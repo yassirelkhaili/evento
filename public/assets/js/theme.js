@@ -29,6 +29,7 @@ var handleInitialTheme = function () {
     }
 };
 handleInitialTheme();
+
 document.addEventListener("DOMContentLoaded", function () {
     var themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
     var themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
@@ -105,7 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("click", handleOutsideClick.bind(null, dropDown));
     //toggle theme
     var handleThemeSwitchBtnClick = function (index) {
-        console.log("triggered");
         if (index === 0) {
             window.matchMedia("(prefers-color-scheme: dark)").matches
                 ? toggleDarkTheme()

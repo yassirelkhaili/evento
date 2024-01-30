@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +21,14 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    if (!session()->has('loginMessageShown')) {
+        Session::flash('loginMessage', "You're logged in!");
+        session(['loginMessageShown' => true]);
+    }
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/dashboard/partners', [PartnerController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.partners');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
