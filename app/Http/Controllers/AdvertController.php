@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Partner;
+use App\Models\Advert;
+use App\Http\Requests\StoreAdvertRequest;
+use App\Http\Requests\UpdateAdvertRequest;
 
-class PartnerController extends Controller
+class AdvertController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-    $partners = Partner::all();
-    return view('dashboard', ["partners" => $partners]);
+        //
     }
 
     /**
@@ -27,7 +27,7 @@ class PartnerController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreAdvertRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class PartnerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Advert $advert)
     {
         //
     }
@@ -43,7 +43,7 @@ class PartnerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Advert $advert)
     {
         //
     }
@@ -51,7 +51,7 @@ class PartnerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateAdvertRequest $request, Advert $advert)
     {
         //
     }
@@ -59,7 +59,7 @@ class PartnerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Advert $advert)
     {
         //
     }

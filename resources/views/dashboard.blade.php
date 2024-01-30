@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
     {{-- flash login success message --}}
-    @if (session('loginMessage'))
+    @session('loginMessage')
         <div class="max-w-7xl mx-auto pt-12">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -14,7 +14,7 @@
             </div>
         </div>
         {{ session()->forget("loginMessage")}}
-        @endif
+    @endsession
         @if (request()->routeIs('dashboard.partners'))
         <x-partners-table :partners="$partners"/>
         @else
