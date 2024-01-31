@@ -17,14 +17,19 @@ use Illuminate\Support\Facades\Session;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+//render routes
+Route::get('/', function () {return view('welcome');});
 Route::get('/dashboard', [AdvertController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::get('/dashboard/partners', [PartnerController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.partners');
 
+//crud routes
+Route::prefix('partner')->group(function () {
+    Route::resource('partner', PartnerController::class);
+});
+Route::prefix("advert")->group(function () {
+});
+
+//auth routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

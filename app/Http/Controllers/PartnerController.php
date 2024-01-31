@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Partner;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-
 class PartnerController extends Controller
 {
     /**
@@ -59,8 +59,11 @@ class PartnerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Partner $partner)
+    public function destroy($partnerID)
     {
-        //
+            $id = intval($partnerID);
+            $partner = Partner::find($id);
+            $partner->delete();
+            return redirect()->route('dashboard.partners');
     }
 }
