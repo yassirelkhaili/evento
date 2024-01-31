@@ -1,0 +1,76 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Advert;
+use Illuminate\Support\Facades\Session;
+class AdvertController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        if (!session()->has('loginMessageShown')) {
+            Session::flash('loginMessage', "You're logged in!");
+            session(['loginMessageShown' => true]);
+        }
+        $adverts = Advert::with('partner:id,name')->orderBy('created_at', 'desc')->get();
+    $adverts->transform(function ($advert) {
+        $advert->partnerName = $advert->partner->name;
+        unset($advert->partner);
+        unset($advert->partnerID);
+        return $advert;
+    });
+    return view('dashboard', compact('adverts'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
+}
