@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Partner;
+use Illuminate\Http\Request;
 
 class PartnerController extends Controller
 {
@@ -12,8 +12,8 @@ class PartnerController extends Controller
      */
     public function index()
     {
-    $partners = Partner::all();
-    return view('dashboard', ["partners" => $partners]);
+        $partners = Partner::all();
+        return view('/dashboard', compact('partners'));
     }
 
     /**
@@ -35,7 +35,7 @@ class PartnerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Partner $partner)
     {
         //
     }
@@ -43,7 +43,7 @@ class PartnerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Partner $partner)
     {
         //
     }
@@ -51,7 +51,7 @@ class PartnerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Partner $partner)
     {
         //
     }
@@ -59,7 +59,7 @@ class PartnerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Partner $partner)
     {
         //
     }

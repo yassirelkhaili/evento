@@ -15,9 +15,10 @@
         </div>
         {{ session()->forget("loginMessage")}}
     @endsession
-        @if (request()->routeIs('dashboard.partners'))
-        <x-partners-table :partners="$partners"/>
-        @else
-        <x-adverts-table/>
-        @endif
+@if (request()->routeIs('dashboard.partners'))
+    <x-partners-table :partners="$partners"/>
+@else
+    <x-adverts-table :adverts="$adverts"/>
+@endif
+
 </x-app-layout>

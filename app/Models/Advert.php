@@ -10,4 +10,9 @@ class Advert extends Model
     use HasFactory;
     protected $table = 'advert';
     protected $fillable = ["title", "content", "partnerID"];
+
+    public function partner()
+    {
+        return $this->belongsTo(Partner::class, 'partnerID');
+    }
 }

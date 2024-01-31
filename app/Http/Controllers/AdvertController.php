@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Advert;
-use App\Http\Requests\StoreAdvertRequest;
-use App\Http\Requests\UpdateAdvertRequest;
-
+use Illuminate\Support\Facades\Session;
 class AdvertController extends Controller
 {
     /**
@@ -13,7 +12,18 @@ class AdvertController extends Controller
      */
     public function index()
     {
-        //
+        if (!session()->has('loginMessageShown')) {
+            Session::flash('loginMessage', "You're logged in!");
+            session(['loginMessageShown' => true]);
+        }
+        $adverts = Advert::with('partner:id,name')->get();
+    $adverts->transform(function ($advert) {
+        $advert->partnerName = $advert->partner->name;
+        unset($advert->partner);
+        unset($advert->partnerID);
+        return $advert;
+    });
+    return view('dashboard', compact('adverts'));
     }
 
     /**
@@ -27,7 +37,7 @@ class AdvertController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAdvertRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -35,7 +45,7 @@ class AdvertController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Advert $advert)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +53,7 @@ class AdvertController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Advert $advert)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +61,7 @@ class AdvertController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAdvertRequest $request, Advert $advert)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +69,7 @@ class AdvertController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Advert $advert)
+    public function destroy(string $id)
     {
         //
     }
