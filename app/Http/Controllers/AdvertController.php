@@ -16,7 +16,7 @@ class AdvertController extends Controller
             Session::flash('loginMessage', "You're logged in!");
             session(['loginMessageShown' => true]);
         }
-        $adverts = Advert::with('partner:id,name')->get();
+        $adverts = Advert::with('partner:id,name')->orderBy('created_at', 'desc')->get();
     $adverts->transform(function ($advert) {
         $advert->partnerName = $advert->partner->name;
         unset($advert->partner);

@@ -27,6 +27,7 @@ Route::prefix('partner')->group(function () {
     Route::resource('partner', PartnerController::class);
 });
 Route::prefix("advert")->group(function () {
+    Route::resource('advert', AdvertController::class);
 });
 
 //auth routes
