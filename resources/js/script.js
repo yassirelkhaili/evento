@@ -48,7 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const populateModal = (data, inputs) => {
-        console.log(inputs);
         inputs.forEach((modalInput) => {
             if (modalInput.tagName.toLowerCase() === 'select') {
                 for (const option of modalInput.options) {
@@ -69,7 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const spinner = document.getElementById("loader");
         if (spinner) {
             modal.classList.toggle("hidden");
-            
+            spinner.classList.toggle("flex");
+            spinner.classList.toggle("hidden");
         }
     }
     //end data fetch function
