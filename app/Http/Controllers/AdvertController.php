@@ -68,9 +68,14 @@ class AdvertController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, int $advertID)
     {
-        //
+        try {
+            $advert = Advert::findOrFail($advertID);
+            return response()->json($advert, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Partner not found. errorcode: ' . $e->getMessage()], 404);
+        }
     }
 
     /**
@@ -84,9 +89,24 @@ class AdvertController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Advert $advert)
     {
-        //
+        $data = $request->all();
+        $validator = Validator::make($data, $this->validationRules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        try {
+            $advert->update($validatedData);
+            return redirect()->back()->with("success", "advert edited successfuly!");
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Error creating advert. Please try again. errorcode: ' . $e->getMessage()]);
+        }
     }
 
     /**
