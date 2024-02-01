@@ -17,10 +17,11 @@ class AdvertFactory extends Factory
      */
     public function definition(): array
     {
+        $dbIds = Partner::pluck("id")->toArray();
         return [
             "title" => $this->faker->sentence,
             "content" => $this->faker->paragraph,
-            "partnerID" => $this->faker->numberBetween(1, Partner::count()), 
+            "partnerID" => $this->faker->randomElement($dbIds), 
         ];
     }
 }
