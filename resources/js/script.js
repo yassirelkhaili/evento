@@ -76,16 +76,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //handle element edit modal
     const editBtns = document.querySelectorAll(".editBtn");
-    const editPartnerModalInputs = [
-        ...document.getElementById("updatePartnerModal").querySelectorAll("input"),
-        ...document.getElementById("updatePartnerModal").querySelectorAll("textarea"),
-        document.getElementById("updatePartnerModal").querySelector("select")
-    ];
+    const updatePartnerModal = document.getElementById("updatePartnerModal");
+    const editPartnerModalInputs = [];
+    //get Partner Modal Inputs
+    if (updatePartnerModal) {
+        editPartnerModalInputs.push(...updatePartnerModal.querySelectorAll("input"));
+        editPartnerModalInputs.push(...updatePartnerModal.querySelectorAll("textarea"));
+        const selectElement = updatePartnerModal.querySelector("select");
+        if (selectElement) {
+            editPartnerModalInputs.push(selectElement);
+        }
+    }
 
     const handleEditBtnPress = (event) => {
     toggleSpinner(editPartnerModal); //toggle spinner animation
     const target = event.target;
     const id = target.getAttribute("data-id");
+    //add elements id to form action
+    editPartnerModal.action = (editPartnerModal.action).replace('__ID__', id);
+    //fetch elements data
     fetchDataById(id, "/partner/partner/").then((data) => populateModal(data, editPartnerModalInputs)).catch((error) => console.error(error)).finally(() => toggleSpinner(editPartnerModal));
     }
 

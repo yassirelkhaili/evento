@@ -5,11 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Advert;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 class AdvertController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    private array $validationRules = [
+        'title' => 'required|string',
+        'content' => 'required|string',
+        'partnerID' => 'required|integer',
+    ];
     public function index()
     {
         if (!session()->has('loginMessageShown')) {
@@ -20,7 +28,6 @@ class AdvertController extends Controller
     $adverts->transform(function ($advert) {
         $advert->partnerName = $advert->partner->name;
         unset($advert->partner);
-        unset($advert->partnerID);
         return $advert;
     });
     return view('dashboard', compact('adverts'));
@@ -37,9 +44,25 @@ class AdvertController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Advert $advert)
     {
-        //
+        $data = $request->all();
+
+        $validator = Validator::make($data, $this->validationRules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        try {
+            $advert::create($validatedData);
+            return redirect()->back()->with("success", "advert added successfuly!");
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Error creating advert. Please try again.']);
+        }
     }
 
     /**
@@ -69,8 +92,15 @@ class AdvertController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($advertID)
     {
-        //
+            $id = intval($advertID);
+            try {
+                $advert = Advert::findOrFail($id);
+            } catch (ModelNotFoundException $e) {
+                abort(404);
+            }
+            $advert->delete();
+            return redirect()->route('dashboard');
     }
 }
