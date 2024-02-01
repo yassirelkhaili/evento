@@ -48,45 +48,77 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const populateModal = (data, inputs) => {
-        console.log(inputs);
         inputs.forEach((modalInput) => {
             if (modalInput.tagName.toLowerCase() === 'select') {
                 for (const option of modalInput.options) {
-                    if (option.value === data.size) {
+                    if ((option.value === data.size) || (parseInt(option.value) === data.partnerID)) {
                         option.selected = true;
                         break;
                     }
                 }
             } else {
-                if (modalInput.id in data) modalInput.value = data[modalInput.id];
+                if (modalInput.name in data) modalInput.value = data[modalInput.name];
             }
         });
     }
 
     const editPartnerModal = document.getElementById("editPartnerForm");
+    const editAdvertModal = document.getElementById("editAdvertForm");
 
     const toggleSpinner = (modal) => {
         const spinner = document.getElementById("loader");
         if (spinner) {
             modal.classList.toggle("hidden");
-            
+            spinner.classList.toggle("flex");
+            spinner.classList.toggle("hidden");
         }
     }
     //end data fetch function
 
     //handle element edit modal
     const editBtns = document.querySelectorAll(".editBtn");
-    const editPartnerModalInputs = [
-        ...document.getElementById("updatePartnerModal").querySelectorAll("input"),
-        ...document.getElementById("updatePartnerModal").querySelectorAll("textarea"),
-        document.getElementById("updatePartnerModal").querySelector("select")
-    ];
+
+    const editPartnerModalInputs = [];
+    //get Partner Modal Inputs
+    if (editPartnerModal) {
+        editPartnerModalInputs.push(...editPartnerModal.querySelectorAll("input"));
+        editPartnerModalInputs.push(...editPartnerModal.querySelectorAll("textarea"));
+        const selectElement = editPartnerModal.querySelector("select");
+        if (selectElement) {
+            editPartnerModalInputs.push(selectElement);
+        }
+    }
+
+    const editAdvertModalInputs = [];
+    //get Partner Modal Inputs
+    if (editAdvertModal) {
+        editAdvertModalInputs.push(...editAdvertModal.querySelectorAll("input"));
+        editAdvertModalInputs.push(...editAdvertModal.querySelectorAll("textarea"));
+        const selectElement = editAdvertModal.querySelector("select");
+        if (selectElement) {
+            editAdvertModalInputs.push(selectElement);
+        }
+    }
 
     const handleEditBtnPress = (event) => {
-    toggleSpinner(editPartnerModal); //toggle spinner animation
     const target = event.target;
     const id = target.getAttribute("data-id");
+
+    if (editPartnerModal) {
+    toggleSpinner(editPartnerModal); //toggle spinner animation
+    //add elements id to form action
+    editPartnerModal.action = (editPartnerModal.action).replace('__ID__', id);
+    //fetch elements data
     fetchDataById(id, "/partner/partner/").then((data) => populateModal(data, editPartnerModalInputs)).catch((error) => console.error(error)).finally(() => toggleSpinner(editPartnerModal));
+    }
+
+    if (editAdvertModal) {
+        toggleSpinner(editAdvertModal); //toggle spinner animation
+        //add elements id to form action
+        editAdvertModal.action = (editAdvertModal.action).replace('__ID__', id);
+        //fetch elements data
+        fetchDataById(id, "/advert/advert/").then((data) => populateModal(data, editAdvertModalInputs)).catch((error) => console.error(error)).finally(() => toggleSpinner(editAdvertModal));
+    }
     }
 
     editBtns && editBtns.forEach((editBtn) => editBtn.addEventListener("click", handleEditBtnPress));

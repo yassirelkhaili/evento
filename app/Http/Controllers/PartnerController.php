@@ -11,6 +11,14 @@ class PartnerController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     private array $validationRules = [
+        'name' => 'required|string',
+        'industry' => 'required|string',
+        'location' => 'required|string',
+        'size' => 'required|in:small,medium,large',
+        'description' => 'required|string',
+    ];
     public function index()
     {
         $partners = Partner::orderBy('created_at', 'desc')->get();
@@ -32,15 +40,7 @@ class PartnerController extends Controller
     {
         $data = $request->all();
 
-        $rules = [
-            'name' => 'required|string',
-            'industry' => 'required|string',
-            'location' => 'required|string',
-            'size' => 'required|in:small,medium,large',
-            'description' => 'required|string',
-        ];
-
-        $validator = Validator::make($data, $rules);
+        $validator = Validator::make($data, $this->validationRules);
 
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
@@ -83,7 +83,22 @@ class PartnerController extends Controller
      */
     public function update(Request $request, Partner $partner)
     {
-        //
+        $data = $request->all();
+        $validator = Validator::make($data, $this->validationRules);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors()->all();
+            return redirect()->back()->withErrors($errors)->withInput();
+        }
+
+        $validatedData = $validator->validated();
+
+        try {
+            $partner->update($validatedData);
+            return redirect()->back()->with("success", "Partner edited successfuly!");
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->withErrors(['error' => 'Error creating partner. Please try again. errorcode: ' . $e->getMessage()]);
+        }
     }
 
     /**
