@@ -60,9 +60,14 @@ class PartnerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Partner $partner)
+    public function show(Request $request, int $partnerID)
     {
-        //
+        try {
+            $partner = Partner::findOrFail($partnerID);
+            return response()->json($partner, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Partner not found. errorcode: ' . $e->getMessage()], 404);
+        }
     }
 
     /**

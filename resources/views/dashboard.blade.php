@@ -16,6 +16,7 @@
         {{ session()->forget("loginMessage")}}
     @endsession
 
+    {{-- render the data tables --}}
     @switch(request()->route()->getName())
     @case("dashboard.partners")
         <x-partners-table :partners="$partners"/>
