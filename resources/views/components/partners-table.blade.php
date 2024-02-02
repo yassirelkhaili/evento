@@ -125,7 +125,15 @@
                         <tr class="border-b dark:border-gray-700">
                             <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{$partner->name}}</th>
                             <td class="px-4 py-3">{{$partner->industry}}</td>
-                            <td class="px-4 py-3">{{$partner->size}}</td>
+                            <td class="px-4 py-3">
+                                <span class="
+                                {{ $partner->size === 'small' ? 'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-300' : '' }}
+                                {{ $partner->size === 'medium' ? 'bg-gray-500 text-gray-200 dark:bg-gray-700 dark:text-gray-300' : '' }}
+                                {{ $partner->size === 'large' ? 'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-300' : '' }}
+                                text-xs font-medium px-2 py-0.5 rounded">
+                                {{ $partner->size }}
+                                </span>
+                            </td>
                             <td class="px-4 py-3 max-w-[12rem] truncate">{{$partner->description}}</td>
                             <td class="px-4 py-3">{{$partner->location}}</td>
                             <td class="px-4 py-3 flex items-center justify-end">
@@ -209,7 +217,9 @@
                         <label for="location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location</label>
                         <input type="text" name="location" id="location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="West Karianechester" required>
                     </div>
-                    <div><label for="size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Size</label><select id="size" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" name="size"><option value="small">Small</option><option value="medium" selected>Medium</option><option value="large">Large</option></select></div>
+                    <div><label for="size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Size</label><select id="size" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" name="size"><option value="small">Small</option><option value="medium" selected>Medium</option><option value="large">Large</option></select></div> 
+                    <div class="sm:col-span-2"><label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload logo</label>
+                    <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file"></div>
                     <div class="sm:col-span-2"><label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label><textarea id="description" rows="4" name="description" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Write partner description here" maxlength="255"></textarea></div>
                 </div>
                 <button type="submit" class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">

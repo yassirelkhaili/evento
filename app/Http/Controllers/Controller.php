@@ -23,11 +23,13 @@ class Controller extends BaseController
 
     public function showAdvert(int $advertID) {
         try {
-            $advert = Advert::findOrFail($advertID)->toArray();
-            return view("profile.show", ["advert" => $advert]);
+            $advert = Advert::with('partner')->findOrFail($advertID);
+            $advertArray = $advert->toArray();
+            $advertArray['partner'] = $advert->partner->toArray();
+    
+            return view("profile.show", ["advert" => $advertArray]);
         } catch (ModelNotFoundException $e) {
-            return response()->json(['error' => 'Partner not found. errorcode: ' . $e->getMessage()], 404);
+            return response()->json(['error' => 'Advert not found. errorcode: ' . $e->getMessage()], 404);
         }
-
-    }
+}
 }
