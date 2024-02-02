@@ -13,11 +13,11 @@ class PartnerController extends Controller
      */
 
      private array $validationRules = [
-        'name' => 'required|string',
-        'industry' => 'required|string',
-        'location' => 'required|string',
+        'name' => 'required|string|min:3|max:50',
+        'industry' => 'required|string|min:3|max:50',
         'size' => 'required|in:small,medium,large',
-        'description' => 'required|string',
+        'location' => 'required|string|min:3|max:120',
+        'description' => 'required|string|min:10|max:255',
     ];
     public function index()
     {

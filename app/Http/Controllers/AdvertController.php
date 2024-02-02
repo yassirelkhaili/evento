@@ -14,8 +14,8 @@ class AdvertController extends Controller
      * Display a listing of the resource.
      */
     private array $validationRules = [
-        'title' => 'required|string',
-        'content' => 'required|string',
+        'title' => 'required|string|min:18|max:255',
+        'content' => 'required|string|min:18|max:255',
         'partnerID' => 'required|integer',
     ];
     public function index()
