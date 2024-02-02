@@ -40,7 +40,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                         @forelse ($adverts as $advert)
                         <a href="{{'/advert/' . $advert->id}}" class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
-                            <div>
+                            <div class="flex flex-col h-full justify-between items-start">
                                 <div class="h-16 w-16 bg-red-50 dark:bg-red-800/20 flex items-center justify-center rounded-full">
                                     <img class="rounded-full h-16 w-16" src="{{ asset('storage/logos/' . $advert->partnerLogo) }}" alt="{{ $advert->partnerName }} Logo">
                                 </div>
@@ -50,6 +50,21 @@
                                 <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
                                     {{ \Illuminate\Support\Str::limit($advert->content, $limit = 200, $end = '...') }}
                                 </p>
+                                <div class="flex justify-between w-full items-center pt-2">
+                                    <div><p class="bg-purple-200 text-purple-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-purple-600 dark:text-purple-300">
+                                        {{$advert->partner->name}}
+                                    </p></div>
+                                    <div class="flex justify-center items-center gap-1">
+                                        <p class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">{{$advert["partner"]["industry"]}}</p>
+                                    </div>
+                                    <p class="
+                                    {{ $advert->partner->size === 'small' ? 'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-300' : '' }}
+                                    {{ $advert->partner->size === 'medium' ? 'bg-gray-500 text-gray-200 dark:bg-gray-700 dark:text-gray-300' : '' }}
+                                    {{ $advert->partner->size === 'large' ? 'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-300' : '' }}
+                                    text-xs font-medium px-2 py-0.5 rounded">
+                                    {{ $advert->partner->size }}
+                                    </p>
+                                </div>
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="self-center shrink-0 stroke-red-500 w-6 h-6 mx-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
