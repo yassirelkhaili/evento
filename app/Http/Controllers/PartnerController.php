@@ -13,11 +13,12 @@ class PartnerController extends Controller
      */
 
      private array $validationRules = [
-        'name' => 'required|string',
-        'industry' => 'required|string',
-        'location' => 'required|string',
+        'name' => 'required|string|min:3|max:50',
+        'industry' => 'required|string|min:3|max:50',
         'size' => 'required|in:small,medium,large',
-        'description' => 'required|string',
+        'location' => 'required|string|min:3|max:120',
+        'description' => 'required|string|min:10|max:255',
+        'logo' => 'required|file|mimes:svg,png,jpg|max:2048',
     ];
     public function index()
     {
@@ -41,17 +42,25 @@ class PartnerController extends Controller
         $data = $request->all();
 
         $validator = Validator::make($data, $this->validationRules);
-
+    
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             return redirect()->back()->withErrors($errors)->withInput();
         }
-
-        $validatedData = $validator->validated();
-
+    
+        if ($request->hasFile('logo')) {
+            try {
+                $uploadedFile = $request->file('logo');
+                $logoPath = $uploadedFile->store('logos', 'public');
+                $data['logo'] = $logoPath;
+            } catch (\Exception $e) {
+                return redirect()->back()->withInput()->withErrors(['error' => 'Error uploading logo. Please try again. ' . $e->getMessage()]);
+            }
+        }
+    
         try {
-            $partner::create($validatedData);
-            return redirect()->back()->with("success", "Partner added successfuly!");
+            $partner::create($data);
+            return redirect()->back()->with("success", "Partner added successfully!");
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->withErrors(['error' => 'Error creating partner. Please try again.']);
         }
