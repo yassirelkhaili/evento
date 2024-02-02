@@ -12,6 +12,7 @@
  */
 
 var currentTheme = "";
+
 var handleInitialTheme = function () {
     var rootClasses = ["transition", "duration-100"];
     rootClasses.forEach(function (rootClass) {
@@ -35,6 +36,16 @@ document.addEventListener("DOMContentLoaded", function () {
     var themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
     var themeToggleBtn = document.getElementById("theme-toggle");
     var dropDown = document.querySelector("#selectThemeDropdown");
+
+    //change welcome logo logic
+    const welcomeLogo = document.getElementById("welcomeLogo");
+
+    const changeLogo = () => {
+        const welcomeSource = welcomeLogo.getAttribute("src").split("/");
+        localStorage.getItem("color-theme") === "light" ?  welcomeSource[5] = "youtalent-high-resolution-logo-transparent.webp" : welcomeSource[5] = "youtalent-high-resolution-logo-transparent3.webp";
+        welcomeLogo.setAttribute("src", welcomeSource.join("/"));
+    }
+    //end change logo logic
     /**
      * @function toggleLightTheme
      * @returns {void}
@@ -86,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var handleInitialThemeIcon = function () {
         currentTheme === "dark" ? themeToggleDarkIcon.classList.remove('hidden') : themeToggleLightIcon.classList.remove('hidden');
     };
-    handleInitialThemeIcon();
+    if(themeToggleDarkIcon && themeToggleLightIcon) handleInitialThemeIcon();
     /**
      * @function handleOutsideClick
      * @description Closes theme dropdown on outside click
@@ -106,6 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("click", handleOutsideClick.bind(null, dropDown));
     //toggle theme
     var handleThemeSwitchBtnClick = function (index) {
+        changeLogo();
         if (index === 0) {
             window.matchMedia("(prefers-color-scheme: dark)").matches
                 ? toggleDarkTheme()
