@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\PartnerController;
-use App\Http\Controllers\AdvertController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\AdvertController;
+use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Session;
 */
 
 //render routes
-Route::get('/', function () {return view('welcome');});
+Route::get('/', [Controller::class, 'index'])->name("index");
 Route::get('/dashboard', [AdvertController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard/partners', [PartnerController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.partners');
 
@@ -27,6 +27,7 @@ Route::prefix('partner')->group(function () {
     Route::resource('partner', PartnerController::class);
 });
 Route::prefix("advert")->group(function () {
+    Route::get("/{id}", [Controller::class, "showAdvert"])->name("adverts.show");
     Route::resource('advert', AdvertController::class);
 });
 

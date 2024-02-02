@@ -8,8 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
     //handle element delete modal
     const deleteBtns = document.querySelectorAll('.deleteBtn');
     const deleteElementModal = document.getElementById('deleteModal');
-    const deleteModalForm = deleteElementModal.querySelector("form");
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
+    const deleteModalForm = deleteElementModal && deleteElementModal.querySelector("form");
+    const csrfToken = document.querySelector('meta[name="csrf-token"]') && document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 /**
  * @description sets the modal hidden inputs value to the elements id
  * @param {any} event
@@ -84,9 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
         editPartnerModalInputs.push(...editPartnerModal.querySelectorAll("input"));
         editPartnerModalInputs.push(...editPartnerModal.querySelectorAll("textarea"));
         const selectElement = editPartnerModal.querySelector("select");
-        if (selectElement) {
-            editPartnerModalInputs.push(selectElement);
-        }
+        selectElement && editPartnerModalInputs.push(selectElement);
     }
 
     const editAdvertModalInputs = [];
@@ -95,9 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         editAdvertModalInputs.push(...editAdvertModal.querySelectorAll("input"));
         editAdvertModalInputs.push(...editAdvertModal.querySelectorAll("textarea"));
         const selectElement = editAdvertModal.querySelector("select");
-        if (selectElement) {
-            editAdvertModalInputs.push(selectElement);
-        }
+        selectElement && editAdvertModalInputs.push(selectElement);
     }
 
     const handleEditBtnPress = (event) => {
