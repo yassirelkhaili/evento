@@ -38,13 +38,18 @@ document.addEventListener("DOMContentLoaded", function () {
     var dropDown = document.querySelector("#selectThemeDropdown");
 
     //change welcome logo logic
-    const welcomeLogo = document.getElementById("welcomeLogo");
 
     const changeLogo = () => {
-        const welcomeSource = welcomeLogo.getAttribute("src").split("/");
-        localStorage.getItem("color-theme") === "light" ?  welcomeSource[5] = "youtalent-high-resolution-logo-transparent.webp" : welcomeSource[5] = "youtalent-high-resolution-logo-transparent3.webp";
-        welcomeLogo.setAttribute("src", welcomeSource.join("/"));
-    }
+        const welcomeLogo = document.getElementById("welcomeLogo");
+        if (welcomeLogo) {
+            const welcomeSource = welcomeLogo.getAttribute("src").split("/");
+            const newLogoName = document.documentElement.classList.contains("dark") ? "youtalent-high-resolution-logo-transparent3.webp" : "youtalent-high-resolution-logo-transparent.webp";
+            welcomeSource[5] = newLogoName;
+            welcomeLogo.setAttribute("src", welcomeSource.join("/"));
+            console.log(document.documentElement.classList.contains("dark"));
+        }
+    };
+    
     //end change logo logic
     /**
      * @function toggleLightTheme
