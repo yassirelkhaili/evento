@@ -16,6 +16,18 @@
         {{ session()->forget("loginMessage")}}
     @endsession
 
+    @if($errors->any())
+    <div class="max-w-7xl mx-auto pt-12">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            @foreach ($errors->all() as $error)
+            <div class="py-3 px-6  text-gray-900 dark:text-gray-100">
+                {{$error}}
+            </div>
+            @endforeach
+        </div>
+    </div>
+    @endif
+
     {{-- render the data tables --}}
     @switch(request()->route()->getName())
     @case("dashboard.partners")
