@@ -44,10 +44,8 @@ class AdvertController extends BaseController
         unset($advert->partner);
         return $advert;
     });
-    
-    $returnValue = !isset($searchQuery) ? compact("adverts") : compact('adverts');
-    
-    return view('dashboard', $returnValue);
+
+    return view('dashboard', ['adverts' => $adverts, 'searchQuery' => $searchQuery]);
     }
 
     /**

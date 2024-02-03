@@ -6,7 +6,8 @@ use App\Models\Partner;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-class PartnerController extends Controller
+use Illuminate\Routing\Controller as BaseController;
+class PartnerController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -20,10 +21,22 @@ class PartnerController extends Controller
         'description' => 'required|string|min:10|max:255',
         'logo' => 'required|file|mimes:svg,png,jpg|max:2048',
     ];
-    public function index()
+    public function index(Request $request)
     {
-        $partners = Partner::orderBy('created_at', 'desc')->paginate(10);
-        return view('dashboard', compact('partners'));
+        $searchQuery = $request->input('search');
+
+        $query = Partner::orderBy('created_at', 'desc');
+
+        $partners = isset($searchQuery)
+        ? $query->where('name', 'LIKE', '%' . $searchQuery . '%')
+                ->orWhere('description', 'LIKE', '%' . $searchQuery . '%')
+                ->orWhere('industry', 'LIKE', '%' . $searchQuery . '%')
+                ->orWhere('size', 'LIKE', '%' . $searchQuery . '%')
+                ->orWhere('location', 'LIKE', '%' . $searchQuery . '%')
+                ->paginate(10)
+        : $query->paginate(10);
+
+    return view('dashboard', ['partners' => $partners, 'searchQuery' => $searchQuery]);
     }
 
     /**
