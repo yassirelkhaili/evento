@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Advert;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AdvertController extends Controller
+class AdvertController extends BaseController
 {
     /**
      * Display a listing of the resource.
@@ -18,19 +19,35 @@ class AdvertController extends Controller
         'content' => 'required|string|min:18|max:255',
         'partnerID' => 'required|integer',
     ];
-    public function index()
+
+    public function index(Request $request)
     {
         if (!session()->has('loginMessageShown')) {
             Session::flash('loginMessage', "You're logged in!");
             session(['loginMessageShown' => true]);
         }
-        $adverts = Advert::with('partner:id,name')->orderBy('created_at', 'desc')->paginate(10);
-    $adverts->transform(function ($advert) {
+        
+        $searchQuery = $request->input('search');
+
+        $query = Advert::with('partner:id,name')->orderBy('created_at', 'desc');
+
+        $adverts = isset($searchQuery)
+        ? $query->where('title', 'LIKE', '%' . $searchQuery . '%')
+                ->orWhere('content', 'LIKE', '%' . $searchQuery . '%')
+                ->orWhereHas('partner', function ($subquery) use ($searchQuery) {
+                    $subquery->where('name', 'LIKE', '%' . $searchQuery . '%');
+                })->paginate(10)
+        : $query->paginate(10);
+
+      $adverts->transform(function ($advert) {
         $advert->partnerName = $advert->partner->name;
         unset($advert->partner);
         return $advert;
     });
-    return view('dashboard', compact('adverts'));
+    
+    $returnValue = !isset($searchQuery) ? compact("adverts") : compact('adverts');
+    
+    return view('dashboard', $returnValue);
     }
 
     /**
