@@ -22,17 +22,18 @@ Route::get('/', [Controller::class, 'index'])->name("index");
 Route::get('/dashboard', [AdvertController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard/partners', [PartnerController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.partners');
 
-//crud routes
-Route::prefix('partner')->group(function () {
-    Route::resource('partner', PartnerController::class);
-});
-Route::prefix("advert")->group(function () {
-    Route::get("/{id}", [Controller::class, "showAdvert"])->name("adverts.show");
-    Route::resource('advert', AdvertController::class);
-});
+Route::get("advert/show/{id}", [Controller::class, "showAdvert"])->name("adverts.show");
 
 //auth routes
 Route::middleware('auth')->group(function () {
+    //crud routes
+    Route::prefix('partner')->group(function () {
+        Route::resource('partner', PartnerController::class);
+    });
+    Route::prefix("advert")->group(function () {
+        Route::resource('advert', AdvertController::class);
+    });
+    //profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

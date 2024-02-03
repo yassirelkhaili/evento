@@ -30,17 +30,17 @@
 
     {{-- render the data tables --}}
     @switch(request()->route()->getName())
+    @case("partner.index")
     @case("dashboard.partners")
-        <x-partners-table :partners="$partners"/>
+        <x-partners-table :partners="$partners" :searchQuery="$searchQuery"/>
         @break
-
+    @case("advert.index")
     @case("dashboard")
-        <x-adverts-table :adverts="$adverts"/>
+        <x-adverts-table :adverts="$adverts" :searchQuery="$searchQuery"/>
         @break
-
     @default
-        <x-adverts-table :adverts="$adverts"/>
-        @break;
+        <x-adverts-table :adverts="$adverts" :searchQuery="$searchQuery"/>
+        @break
     @endswitch
 
 
