@@ -25,7 +25,7 @@ Route::get('/dashboard/partners', [PartnerController::class, 'index'])->middlewa
 Route::get("advert/show/{id}", [Controller::class, "showAdvert"])->name("adverts.show");
 
 //auth routes
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'can:access-admin-routes'])->group(function () {
     //crud routes
     Route::prefix('partner')->group(function () {
         Route::resource('partner', PartnerController::class);
