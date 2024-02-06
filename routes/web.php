@@ -23,12 +23,14 @@ Route::get('/', [Controller::class, 'index'])->name("index");
 
 Route::get("advert/show/{id}", [Controller::class, "showAdvert"])->name("adverts.show");
 
-//show dashboard routes
-Route::get('/dashboard', [AdvertController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/dashboard/partners', [PartnerController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.partners');
+//show learner dashboard routes
+Route::get('/dashboard/applications', [ApplicationsController::class, 'index'])->name("dashboard.applications");
 
 //auth routes
 Route::middleware(['auth', 'can:access-admin-dashboard'])->group(function () {
+    //show Admin dashboard routes
+    Route::get('/dashboard/partners', [PartnerController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.partners');
+    Route::get('/dashboard', [AdvertController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
     //crud routes
     Route::prefix('partner')->group(function () {
         Route::resource('partner', PartnerController::class);
@@ -41,7 +43,7 @@ Route::middleware(['auth', 'can:access-admin-dashboard'])->group(function () {
     Route::prefix('application')->group(function () {
         Route::resource('application', ApplicationsController::class);
     });
-    
+
     //profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

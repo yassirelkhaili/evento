@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Advert extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
     protected $table = 'advert';
     protected $fillable = ["title", "content", "partnerID"];
 
