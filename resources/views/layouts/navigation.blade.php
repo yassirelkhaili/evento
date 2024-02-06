@@ -11,17 +11,26 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Announcements') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard.partners')" :active="request()->routeIs('dashboard.partners')">
-                        {{ __('Partners') }}
-                    </x-nav-link>
-                </div>
+               @if (auth()->user()->can("access-admin-dashboard"))
+               <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Announcements') }}
+                </x-nav-link>
             </div>
+            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <x-nav-link :href="route('dashboard.partners')" :active="request()->routeIs('dashboard.partners')">
+                    {{ __('Partners') }}
+                </x-nav-link>
+            </div>
+        </div>
+        @else
+        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                {{ __('Applications') }}
+            </x-nav-link>
+        </div>
+    </div>
+               @endif
 
             <!-- Settings Dropdown -->
             <div class="flex flex-row justify-center items-center">
