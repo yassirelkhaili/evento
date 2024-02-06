@@ -29,6 +29,7 @@
     @endif
 
     {{-- render the data tables --}}
+    @if (auth()->user()->can("access-admin-dashboard"))
     @switch(request()->route()->getName())
     @case("partner.index")
     @case("dashboard.partners")
@@ -42,6 +43,13 @@
         <x-adverts-table :adverts="$adverts" :searchQuery="$searchQuery"/>
         @break
     @endswitch
+    @else 
+    @php
+    $searchQuery = '';
+    $applications = [];    
+    @endphp
+        <x-applications-table :applications="$applications" :searchQuery="$searchQuery" />
+    @endif
 
 
 </x-app-layout>

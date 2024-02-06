@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+use App\Models\User;
 use Spatie\Permission\Models\Permission;
 
 class DatabaseSeeder extends Seeder
@@ -14,9 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-    $adminRole = Role::create(['name' => 'Admin']);
-    $learnerRole = Role::create(['name' => 'Learner']);
-    $permission = Permission::findOrCreate("access-admin-dashboard");
-    $permission->assignRole("Admin");
+        $user = User::find(1);
+        $role = Role::findByName('Admin');
+        $user->assignRole($role);
     }
 }
