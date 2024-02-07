@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         $user = Auth::user();
-        if ($user && isset($user->getRoleNames()[0])) {
+        if ($user && !empty($user->getRoleNames()[0])) {
             // Get the user's roles
             $roles = $user->getRoleNames();
 

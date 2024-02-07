@@ -21,11 +21,8 @@ class Application extends Model
         "created_at"
     ];
 
-    public function adverts() {
-        return $this->hasMany(Advert::class,"advert_id");
-    }
-
-    public function users() {
-        return $this->hasOne(User::class,"user_id");
+    public function advert()
+    {
+        return $this->belongsTo(Advert::class, "advert_id");
     }
 }
