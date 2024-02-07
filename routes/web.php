@@ -24,10 +24,14 @@ Route::get('/', [Controller::class, 'index'])->name("index");
 Route::get("advert/show/{id}", [Controller::class, "showAdvert"])->name("adverts.show");
 
 Route::middleware(['auth'])->group(function () {
-//show learner dashboard routes
-Route::get('/dashboard/applications', [ApplicationsController::class, 'index'])->name("dashboard.applications");
-//application routes
-Route::delete("/application/{application}", [ApplicationsController::class,"destroy"])->name("application.destroy");
+    //profile routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    //show learner dashboard routes
+    Route::get('/dashboard/applications', [ApplicationsController::class, 'index'])->name("dashboard.applications");
+    //application routes
+    Route::delete("/application/{application}", [ApplicationsController::class, "destroy"])->name("application.destroy");
 });
 
 //auth routes
@@ -42,11 +46,6 @@ Route::middleware(['auth', 'can:access-admin-dashboard'])->group(function () {
     Route::prefix("advert")->group(function () {
         Route::resource('advert', AdvertController::class);
     });
-
-    //profile routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
