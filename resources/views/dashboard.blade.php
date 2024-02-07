@@ -44,10 +44,6 @@
         @break
     @endswitch
     @else 
-    @php
-    $searchQuery = '';
-    $applications = [];    
-    @endphp
         <x-applications-table :applications="$applications" :searchQuery="$searchQuery" />
     @endif
 
