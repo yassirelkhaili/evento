@@ -12,7 +12,7 @@
 </header>
 
 <div>
-<div class="p-2.5 rounded-lg flex flex-wrap justify-start items-center bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white focus:outline-none">
+<div id="skill-input" class="p-2.5 rounded-lg flex flex-wrap justify-start items-center bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white focus:outline-none">
 @foreach ($skills as $skill)
           <div class='px-1'>
                   <div class='dark:bg-primary-900 flex justify-center items-center rounded gap-1 py-1 px-2 text-primary-300 mt-1'>
@@ -27,9 +27,14 @@
               @endforeach
 </div>
 </div>
-<div><label for="skill" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose a skill</label><select name="skill" id="skill" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-@forelse ($availableSkills as $availableSkill)
-<option value={{$availableSkill->id}}>{{$availableSkill->name}}</option>
+<div>
+  <select name="skill" id="skill" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+@forelse ($availableSkills as $index => $availableSkill)
+@if ($index === 0)
+<option selected disabled>Select skills</option>
+    @else
+    <option value={{$availableSkill->id}} >{{$availableSkill->name}}</option>
+@endif
 @empty
 <option selected disabled>no skill is available at this moment</option>
 @endforelse

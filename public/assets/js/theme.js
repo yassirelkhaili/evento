@@ -42,19 +42,85 @@ document.addEventListener("DOMContentLoaded", function () {
     const skillButtons = document.querySelectorAll(".skill-button");
     const hiddenSkillInput = document.querySelector('input[name="skills"]');
     const currentSkills = hiddenSkillInput.value.split(',');
+    const skillSelector = document.getElementById("skill");
 
     const handleSkillsDelete = (event) => {
+        console.log(event.target)
         //find and delete from currentSkills array and hide skill to be deleted
-        const targetSkill = event.target.parentElement.parentElement.querySelector('span').textContent;
+        const targetSkill = event.target.closest('span').textContent;
+        console.log(targetSkill)
         const targetSkillContainer = event.target.parentElement.parentElement.parentElement;
         var skillIndex = currentSkills.indexOf(targetSkill);
         if (skillIndex !== -1) currentSkills.splice(skillIndex, 1);
         targetSkillContainer.classList.add("hidden");
+        //show available option
+        for (const selectedOption of skillSelector.selectedOptions) {
+            if (selectedOption.textContent === targetSkill) {
+                selectedOption.hidden = false;
+                selectedOption.disabled = false;
+                break;
+            }
+        }
         //update hidden input value
         hiddenSkillInput.value = currentSkills.join(',');
-    } 
+    }
 
     skillButtons.forEach((skillButton) => skillButton.addEventListener("click", handleSkillsDelete));
+
+    //handle add skills
+
+    const generateSkillTag = (skillName) => {
+    const skillInput = document.getElementById('skill-input');
+    //this was generated using chatgpt cause its too much and I dont want to use innerHTML because of XSS
+    const outerDiv = document.createElement('div');
+    outerDiv.classList.add('px-1');
+    const innerDiv = document.createElement('div');
+    innerDiv.classList.add('dark:bg-primary-900', 'flex', 'justify-center', 'items-center', 'rounded', 'gap-1', 'py-1', 'px-2', 'text-primary-300', 'mt-1');
+    const skillSpan = document.createElement('span');
+    skillSpan.classList.add('text-xs', 'font-medium', 'text-primary-300');
+    skillSpan.textContent = skillName;
+    const removeButton = document.createElement('button');
+    /**
+     * @description this is me not chatgpt
+     */
+    //append event listener
+    removeButton.addEventListener("click", handleSkillsDelete);
+    //end my code
+    removeButton.type = 'button';
+    removeButton.classList.add('skill-button');
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.classList.add('w-2', 'h-2');
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('fill', '#FFFFFFF');
+    svg.setAttribute('viewBox', '0 0 14 14');
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute('stroke', 'currentColor');
+    path.setAttribute('stroke-linecap', 'round');
+    path.setAttribute('stroke-linejoin', 'round');
+    path.setAttribute('stroke-width', '2');
+    path.setAttribute('d', 'm1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6');
+    svg.appendChild(path);
+    removeButton.appendChild(svg);
+    innerDiv.appendChild(skillSpan);
+    innerDiv.appendChild(removeButton);
+    outerDiv.appendChild(innerDiv);
+    skillInput.appendChild(outerDiv);
+    }
+    
+    const handleSkillAddition = (event) => {
+        const selectedOption = event.target.selectedOptions[0];
+        const targetSkill = selectedOption.textContent;
+        //generate and append new skill tag
+        generateSkillTag(targetSkill);
+        //add skill to hidden input element
+        const newValue = hiddenSkillInput.value + ',' + targetSkill;
+        hiddenSkillInput.value = newValue;
+        //hide && disable selected option
+        selectedOption.hidden = true;
+        selectedOption.disabled = true;
+    }
+
+    skillSelector.addEventListener("change", handleSkillAddition);
     //change welcome logo logic
 
     const changeLogo = () => {
