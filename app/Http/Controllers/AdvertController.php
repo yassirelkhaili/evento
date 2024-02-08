@@ -159,9 +159,9 @@ class AdvertController extends BaseController
 
         $filteredAdverts = $adverts->filter(function ($advert) use ($userSkills) {
             $advertSkills = $advert->skills()->pluck('name')->toArray();
-            // Calculate the intersection of user skills and advert skills
+            //calculate the intersection of user skills and advert skills
             $intersection = array_intersect($userSkills, $advertSkills);
-            // Calculate the Jaccard similarity coefficient
+            //calculate the Jaccard similarity coefficient
             $similarity = count($intersection) / (count($userSkills) + count($advertSkills) - count($intersection));
             return $similarity >= 0.6;
         })->map(function ($advert) {
@@ -175,7 +175,7 @@ class AdvertController extends BaseController
             ];
         });
 
-        // Replace the paginated adverts with the filtered and paginated results
+        //set paginated adverts to filtered and paginated adverts
         $adverts->setCollection($filteredAdverts);
         return view('dashboard', ['recommendations'=> $adverts, 'searchQuery' => $searchQuery]);
     }
