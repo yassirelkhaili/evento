@@ -37,6 +37,24 @@ document.addEventListener("DOMContentLoaded", function () {
     var themeToggleBtn = document.getElementById("theme-toggle");
     var dropDown = document.querySelector("#selectThemeDropdown");
 
+    //handle skills
+
+    const skillButtons = document.querySelectorAll(".skill-button");
+    const hiddenSkillInput = document.querySelector('input[name="skills"]');
+    const currentSkills = hiddenSkillInput.value.split(',');
+
+    const handleSkillsDelete = (event) => {
+        //find and delete from currentSkills array and hide skill to be deleted
+        const targetSkill = event.target.parentElement.parentElement.querySelector('span').textContent;
+        const targetSkillContainer = event.target.parentElement.parentElement.parentElement;
+        var skillIndex = currentSkills.indexOf(targetSkill);
+        if (skillIndex !== -1) currentSkills.splice(skillIndex, 1);
+        targetSkillContainer.classList.add("hidden");
+        //update hidden input value
+        hiddenSkillInput.value = currentSkills.join(',');
+    } 
+
+    skillButtons.forEach((skillButton) => skillButton.addEventListener("click", handleSkillsDelete));
     //change welcome logo logic
 
     const changeLogo = () => {

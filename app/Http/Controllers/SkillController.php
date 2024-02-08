@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Skill;
-use App\Http\Requests\StoreSkillRequest;
-use App\Http\Requests\UpdateSkillRequest;
+use Illuminate\Http\Request;
 
 class SkillController extends Controller
 {
@@ -27,15 +26,23 @@ class SkillController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSkillRequest $request)
+    public function store(Request $request)
     {
-        //
+        $user = $request->user();
+        $newSkillNames = explode(',', $request->input('skills'));
+        $newSkillIDs = [];
+        foreach ($newSkillNames as $skillName) {
+            $skill = Skill::firstOrCreate(['name' => $skillName]);
+            $newSkillIDs[] = $skill->id;
+        }
+        $user->skills()->sync($newSkillIDs);
+        return redirect()->back()->with('success','Your skills have been updated');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Skill $skill)
+    public function show(string $id)
     {
         //
     }
@@ -43,7 +50,7 @@ class SkillController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Skill $skill)
+    public function edit(string $id)
     {
         //
     }
@@ -51,7 +58,7 @@ class SkillController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSkillRequest $request, Skill $skill)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +66,7 @@ class SkillController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Skill $skill)
+    public function destroy(string $id)
     {
         //
     }
