@@ -45,9 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const skillSelector = document.getElementById("skill");
 
     const handleSkillsDelete = (event) => {
-        console.log(event.target)
         //find and delete from currentSkills array and hide skill to be deleted
-        const targetSkill = event.target.closest('span').textContent;
+        const targetSkill = event.target.closest('div').querySelector('span').textContent;
         console.log(targetSkill)
         const targetSkillContainer = event.target.parentElement.parentElement.parentElement;
         var skillIndex = currentSkills.indexOf(targetSkill);
