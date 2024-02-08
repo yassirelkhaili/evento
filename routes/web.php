@@ -34,6 +34,7 @@ Route::middleware(['auth'])->group(function () {
     //application routes
     Route::delete("/application/{application}", [ApplicationsController::class, "destroy"])->name("application.destroy");
     Route::post("/skill", [SkillController::class, "store"])->name("skill.update");
+    Route::get("/dashboard/recommendations", [AdvertController::class, "generateRecommendations"])->name("dashboard.recommendation");
 });
 
 //auth routes
