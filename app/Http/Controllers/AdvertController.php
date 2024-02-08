@@ -142,4 +142,41 @@ class AdvertController extends BaseController
             $advert->delete();
             return redirect()->route('dashboard');
     }
+
+    public function generateRecommendations (Request $request) {
+        $userSkills = Auth::user()->skills()->pluck('name')->toArray();
+        $searchQuery = $request->input('search');
+
+        $adverts = Advert::query()
+        ->when(isset($searchQuery), function ($query) use ($searchQuery) {
+            $query->where('title', 'LIKE', '%' . $searchQuery . '%')
+                ->orWhere('content', 'LIKE', '%' . $searchQuery . '%')
+                ->orWhereHas('partner', function ($subquery) use ($searchQuery) {
+                    $subquery->where('name', 'LIKE', '%' . $searchQuery . '%');
+                });
+        })
+        ->paginate(10);
+
+        $filteredAdverts = $adverts->filter(function ($advert) use ($userSkills) {
+            $advertSkills = $advert->skills()->pluck('name')->toArray();
+            //calculate the intersection of user skills and advert skills
+            $intersection = array_intersect($userSkills, $advertSkills);
+            //calculate the Jaccard similarity coefficient
+            $similarity = count($intersection) / (count($userSkills) + count($advertSkills) - count($intersection));
+            return $similarity >= 0.6;
+        })->map(function ($advert) {
+            return [
+                'id' => $advert->id,
+                'title' => $advert->title,
+                'content' => $advert->content,
+                'partner' => $advert->partner()->pluck('name')->toArray(),
+                'created_at' => $advert->created_at,
+                'skills' => $advert->skills()->pluck('name')->toArray(),
+            ];
+        });
+
+        //set paginated adverts to filtered and paginated adverts
+        $adverts->setCollection($filteredAdverts);
+        return view('dashboard', ['recommendations'=> $adverts, 'searchQuery' => $searchQuery]);
+    }
 }

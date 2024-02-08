@@ -16,4 +16,8 @@ class Advert extends Model
     {
         return $this->belongsTo(Partner::class, 'partnerID');
     }
+
+    public function skills () {
+        return $this->belongsToMany(Skill::class,'advert_learner_skill','advert_id');
+    }
 }

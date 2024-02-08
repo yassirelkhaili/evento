@@ -44,7 +44,19 @@
         @break
     @endswitch
     @else 
-        <x-applications-table :applications="$applications" :searchQuery="$searchQuery" />
+        @switch(request()->route()->getName())
+            @case("dashboard.applications")
+            @case("application.index")
+            <x-applications-table :applications="$applications" :searchQuery="$searchQuery" />
+                @break
+                @case("dashboard.recommendation")
+                @case("recommendation.index")
+            <x-recommendations-table :recommendations="$recommendations" :searchQuery="$searchQuery" />
+                @break
+            @default
+            <x-applications-table :applications="$applications" :searchQuery="$searchQuery" />
+                @break;
+        @endswitch
     @endif
 
 

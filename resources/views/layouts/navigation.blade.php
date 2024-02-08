@@ -29,6 +29,11 @@
                 {{ __('Applications') }}
             </x-nav-link>
         </div>
+        <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+            <x-nav-link :href="route('dashboard.recommendation')" :active="request()->routeIs('dashboard.recommendation')">
+                {{ __('Job Recommendations') }}
+            </x-nav-link>
+        </div>
     </div>
                @endif
 
