@@ -6,6 +6,7 @@ use App\Http\Controllers\AdvertController;
 use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SkillController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/applications', [ApplicationsController::class, 'index'])->name("dashboard.applications");
     //application routes
     Route::delete("/application/{application}", [ApplicationsController::class, "destroy"])->name("application.destroy");
+    Route::post("/skill", [SkillController::class, "store"])->name("skill.update");
 });
 
 //auth routes
