@@ -33,6 +33,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard/applications', [ApplicationsController::class, 'index'])->name("dashboard.applications");
     //application routes
     Route::delete("/application/{application}", [ApplicationsController::class, "destroy"])->name("application.destroy");
+    Route::post("/application", [ApplicationsController::class,"store"])->name("application.store");
+    //skill / recommendation routes
     Route::post("/skill", [SkillController::class, "store"])->name("skill.update");
     Route::get("/dashboard/recommendations", [AdvertController::class, "generateRecommendations"])->name("dashboard.recommendation");
 });

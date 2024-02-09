@@ -154,16 +154,15 @@ class AdvertController extends BaseController
                 ->orWhereHas('partner', function ($subquery) use ($searchQuery) {
                     $subquery->where('name', 'LIKE', '%' . $searchQuery . '%');
                 });
-        })
-        ->paginate(10);
+        })->paginate(10);
 
         $filteredAdverts = $adverts->filter(function ($advert) use ($userSkills) {
             $advertSkills = $advert->skills()->pluck('name')->toArray();
             //calculate the intersection of user skills and advert skills
             $intersection = array_intersect($userSkills, $advertSkills);
-            //calculate the Jaccard similarity coefficient
-            $similarity = count($intersection) / (count($userSkills) + count($advertSkills) - count($intersection));
-            return $similarity >= 0.6;
+    if(count($advertSkills) === 0) return 0;
+    $similarity = count($intersection) / count($advertSkills);
+            return $similarity >= 0.6; //greater than 60% match
         })->map(function ($advert) {
             return [
                 'id' => $advert->id,
@@ -172,6 +171,7 @@ class AdvertController extends BaseController
                 'partner' => $advert->partner()->pluck('name')->toArray(),
                 'created_at' => $advert->created_at,
                 'skills' => $advert->skills()->pluck('name')->toArray(),
+                'userSkills' => Auth::user()->skills()->pluck('name')->toArray()
             ];
         });
 

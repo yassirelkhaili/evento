@@ -20,4 +20,8 @@ class Advert extends Model
     public function skills () {
         return $this->belongsToMany(Skill::class,'advert_learner_skill','advert_id');
     }
+
+    public function applcation () {
+        return $this->belongsTo(Application::class,'advert_id');
+    }
 }

@@ -29,6 +29,7 @@ class Controller extends BaseController
             $advert = Advert::with('partner')->findOrFail($advertID);
             $advertArray = $advert->toArray();
             $partner = $advert->partner->toArray();
+            $skills = $advert->skills->pluck("name")->toArray();
             $dataToUnset = [
                 "created_at",
                 "updated_at",
@@ -36,6 +37,7 @@ class Controller extends BaseController
             ];
             foreach ($dataToUnset as $key) unset($partner[$key]);
             $advertArray['partner'] = $partner;
+            $advertArray['skills'] = $skills;
             return view("profile.show", ["advert" => $advertArray]);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Advert not found. errorcode: ' . $e->getMessage()], 404);

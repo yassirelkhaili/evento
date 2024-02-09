@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const skillButtons = document.querySelectorAll(".skill-button");
     const hiddenSkillInput = document.querySelector('input[name="skills"]');
-    const currentSkills = hiddenSkillInput.value.split(',');
+    const currentSkills = hiddenSkillInput && hiddenSkillInput.value.split(',');
     const skillSelector = document.getElementById("skill");
 
     const handleSkillsDelete = (event) => {
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedOption.disabled = true;
     }
 
-    skillSelector.addEventListener("change", handleSkillAddition);
+    skillSelector && skillSelector.addEventListener("change", handleSkillAddition);
     //change welcome logo logic
 
     const changeLogo = () => {
