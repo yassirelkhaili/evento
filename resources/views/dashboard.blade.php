@@ -39,6 +39,10 @@
     @case("dashboard")
         <x-adverts-table :adverts="$adverts" :searchQuery="$searchQuery"/>
         @break
+        @case("dashboard.users")
+        @case("user.index")
+    <x-users-table :users="$users" :searchQuery="$searchQuery" />    
+        @break
     @default
         <x-adverts-table :adverts="$adverts" :searchQuery="$searchQuery"/>
         @break

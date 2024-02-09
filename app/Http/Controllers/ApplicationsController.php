@@ -6,6 +6,7 @@ use App\Models\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -68,7 +69,17 @@ class ApplicationsController extends BaseController
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $userID = $request->user()->id;
+            $advertID = $request->input('advertID');
+            Application::create(["learner_id" => $userID, "advert_id" => $advertID]);
+            return redirect()->route("dashboard.applications")->with("success", "Application created successfully");
+        } catch (\Exception $e) {
+            if ($e instanceof ValidationException) {
+                return redirect()->back()->withErrors($e->errors()); //this will remain unhandeled in the view because I need sleep
+            }
+            return redirect()->back()->with('error', 'An error occurred while processing your request.'); //this aswell :)
+        }
     }
 
     /**

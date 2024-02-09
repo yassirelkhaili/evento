@@ -15,9 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::where('name', 'Yassirelk')->firstOrFail();
-$role = Role::where('name', 'Admin')->first();
-$user->assignRole($role);
-$user->save();
+        $role = Role::where('name', 'super admin')->first();
+        $permission = Permission::where('name', 'access-admin-dashboard')->first();
+        $role->givePermissionTo($permission);
     }
 }
