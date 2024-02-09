@@ -57,6 +57,8 @@ Route::middleware(['auth', 'can:access-admin-dashboard'])->group(function () {
 Route::middleware(['auth', 'can:access-admin-dashboard', 'can:manage roles'])->group(function () {
 Route::get('/dashboard/users', [UserController::class, 'index'])->name('user.index');
 Route::post('dashboard/users/create', [UserController::class,'store'])->name('user.store');
+Route::put("dashboard/users/{user}", [UserController::class,"update"])->name("user.update");
+Route::delete("dashboard/users/{user}", [UserController::class,"destroy"])->name("user.destroy");
 });
 
 require __DIR__ . '/auth.php';
