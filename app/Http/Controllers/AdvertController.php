@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Advert;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -147,16 +144,9 @@ class AdvertController extends BaseController
         $userSkills = Auth::user()->skills()->pluck('name')->toArray();
         $searchQuery = $request->input('search');
 
-        $adverts = Advert::query()
-        ->when(isset($searchQuery), function ($query) use ($searchQuery) {
-            $query->where('title', 'LIKE', '%' . $searchQuery . '%')
-                ->orWhere('content', 'LIKE', '%' . $searchQuery . '%')
-                ->orWhereHas('partner', function ($subquery) use ($searchQuery) {
-                    $subquery->where('name', 'LIKE', '%' . $searchQuery . '%');
-                });
-        })->paginate(10);
-
-        $filteredAdverts = $adverts->filter(function ($advert) use ($userSkills) {
+        $recommendations = Advert::whereHas('skills', function ($query) use ($userSkills) {
+            $query->whereIn('name', $userSkills);
+        })->get()->filter(function ($advert) use ($userSkills) {
             $advertSkills = $advert->skills()->pluck('name')->toArray();
             //calculate the intersection of user skills and advert skills
             $intersection = array_intersect($userSkills, $advertSkills);
@@ -175,8 +165,6 @@ class AdvertController extends BaseController
             ];
         });
 
-        //set paginated adverts to filtered and paginated adverts
-        $adverts->setCollection($filteredAdverts);
-        return view('dashboard', ['recommendations'=> $adverts, 'searchQuery' => $searchQuery]);
+        return view('dashboard', ['recommendations'=> $recommendations, 'searchQuery' => $searchQuery]);
     }
 }

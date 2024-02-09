@@ -7,6 +7,7 @@ use App\Http\Controllers\ApplicationsController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,11 @@ Route::middleware(['auth', 'can:access-admin-dashboard'])->group(function () {
     Route::prefix("advert")->group(function () {
         Route::resource('advert', AdvertController::class);
     });
+});
+
+Route::middleware(['auth', 'can:access-admin-dashboard', 'can:manage roles'])->group(function () {
+Route::get('/dashboard/users', [UserController::class, 'index'])->name('user.index');
+Route::post('dashboard/users/create', [UserController::class,'store'])->name('user.store');
 });
 
 require __DIR__ . '/auth.php';

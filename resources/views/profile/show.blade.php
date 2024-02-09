@@ -69,6 +69,7 @@
                                     @endforelse
                                     </div>
                                 </div>
+                                @if (auth()->check())
                                 <div class="pt-1 flex flex-col gap-2 justify-center items-start">
                                     <h5 class="text-grey-500 dark:text-white">Apply Now:</h5>
                                     <form action="{{ route("application.store") }}" method="post">
@@ -82,6 +83,7 @@
                                         </button>
                                     </form>
                                 </div>
+                                @endif
                             </div>
                         </div>
                         </div>
