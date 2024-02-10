@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const eventTarget = event.target;
         if (eventTarget && eventTarget.hasAttribute("data-id")) {
             const elementId = eventTarget.getAttribute('data-id');
-            deleteModalForm.action = deleteModalForm.action.replace('__ID__', elementId.trim());
+            // deleteModalForm.action = deleteModalForm.action.replace('__ID__', elementId.trim());
         }
     }
 

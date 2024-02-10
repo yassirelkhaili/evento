@@ -12,8 +12,16 @@ class UserController extends BaseController
      */
     public function index(Request $request)
     {
-        $searchQuery = $request->input('searchQuery');
-        $users = User::paginate(10);
+        $searchQuery = $request->input('search');
+        $query = User::query();
+
+    if ($searchQuery) {
+        $query->where('name', 'LIKE', '%' . $searchQuery . '%')
+              ->orWhere('email', 'LIKE', '%' . $searchQuery . '%')
+              ->orWhere('role', 'LIKE', '%' . $searchQuery . '%');
+    }
+
+    $users = $query->paginate(10);
         return view("dashboard", ['users' => $users, 'searchQuery' => $searchQuery]);
     }
 
