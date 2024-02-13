@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 class UserController extends BaseController
 {
     /**
@@ -70,6 +72,13 @@ class UserController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $id = intval($id);
+        try {
+            $advert = User::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            abort(404);
+        }
+        $advert->delete();
+        return redirect()->back()->with('success','user deleted successfuly');
     }
 }
