@@ -37,7 +37,7 @@
         @break
         @case("dashboard.users")
         @case("user.index")
-    <x-users-table :users="$users" :searchQuery="$searchQuery" />    
+    <x-users-table :users="$users" :searchQuery="$searchQuery" :availableRoles="$availableRoles"/>    
         @break
     @default
         <x-adverts-table :adverts="$adverts" :searchQuery="$searchQuery"/>

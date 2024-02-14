@@ -59,6 +59,7 @@ Route::get('/dashboard/users', [UserController::class, 'index'])->name('user.ind
 Route::post('dashboard/users/create', [UserController::class,'store'])->name('user.store');
 Route::put("dashboard/users/{user}", [UserController::class,"update"])->name("user.update");
 Route::delete("dashboard/users/{user}", [UserController::class,"destroy"])->name("user.destroy");
+Route::get("/dashboard/users/{user}", [UserController::class,"show"])->name("user.show");
 });
 
 require __DIR__ . '/auth.php';
