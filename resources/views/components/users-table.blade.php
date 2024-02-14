@@ -142,8 +142,8 @@
                                             </button>
                                         </li>
                                         <li>
-                                            <button data-id="{{$user->id}}" type="button"           data-modal-target="deleteModalTarget" 
-                                                data-modal-toggle="deleteModalTarget" class="deleteBtn flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500 dark:hover:text-red-400">
+                                            <button data-id="{{$user->id}}" type="button"           data-modal-target="deleteModal" 
+                                                data-modal-toggle="deleteModal" class="deleteBtn flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500 dark:hover:text-red-400">
                                                 Delete
                                             </button>
                                         </li>
@@ -190,14 +190,15 @@
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User Name</label>
-                        <input type="text" name="title" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type user name" required>
+                        <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type user name" required>
                     </div>
-                    <div><label for="partner" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label><select name="partnerID" id="partner" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        {{-- @forelse ($adverts as $item)
-                        <option value={{$item->partnerID}}>{{$item->partnerName}}</option>
+                    <div><label for="partner" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label><select name="role" id="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+
+                        @forelse ($availableRoles as $role)
+                        <option value="{{$role}}">{{$role}}</option>
                         @empty
-                        <option selected disabled>no partner available</option>
-                        @endforelse --}}
+                        <option selected disabled>no roles available</option>
+                        @endforelse
                     </select></div>
                 </div>
                 <div class="flex items-center space-x-4">
@@ -208,7 +209,7 @@
     </div>
 </div>
 <!-- Delete modal -->
-<div id="deleteModalTarget" data-modal-toggle="deleteModalTarget" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="deleteModal" data-modal-toggle="deleteModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-4 w-full max-w-md max-h-full">
         <!-- Modal content -->
         <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
@@ -226,7 +227,7 @@
                 <form action="{{ route('user.destroy', '__ID__') }}" method="POST" id="form">
                     @csrf
                     @method('DELETE')
-                <button data-modal-toggle="deleteModalTarget" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
+                <button data-modal-toggle="deleteModal" type="button" class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No, cancel</button>
                 <button type="submit" class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Yes, I'm sure</button>
                 </form>
             </div>

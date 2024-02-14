@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const eventTarget = event.target;
         if (eventTarget && eventTarget.hasAttribute("data-id")) {
             const elementId = eventTarget.getAttribute('data-id');
-            // deleteModalForm.action = deleteModalForm.action.replace('__ID__', elementId.trim());
+            deleteModalForm.action = deleteModalForm.action.replace('__ID__', elementId.trim());
         }
     }
 
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         inputs.forEach((modalInput) => {
             if (modalInput.tagName.toLowerCase() === 'select') {
                 for (const option of modalInput.options) {
-                    if ((option.value === data.size) || (parseInt(option.value) === data.partnerID)) {
+                    if ((option.value === data.size) || (parseInt(option.value) === data.partnerID) || (option.textContent === data.role)) {
                         option.selected = true;
                         break;
                     }
@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const editPartnerModal = document.getElementById("editPartnerForm");
     const editAdvertModal = document.getElementById("editAdvertForm");
+    const editUserModal = document.getElementById("editUserForm");
 
     const toggleSpinner = (modal) => {
         const spinner = document.getElementById("loader");
@@ -96,6 +97,15 @@ document.addEventListener("DOMContentLoaded", () => {
         selectElement && editAdvertModalInputs.push(selectElement);
     }
 
+    const editUserModalInputs = [];
+
+    //get User Modal Inputs
+    if (editUserModal) {
+        editUserModalInputs.push(...editUserModal.querySelectorAll("input"));
+        const selectElement = editUserModal.querySelector("select");
+        selectElement && editUserModalInputs.push(selectElement);
+    }
+
     const handleEditBtnPress = (event) => {
     const target = event.target;
     const id = target.getAttribute("data-id");
@@ -114,6 +124,14 @@ document.addEventListener("DOMContentLoaded", () => {
         editAdvertModal.action = (editAdvertModal.action).replace('__ID__', id);
         //fetch elements data
         fetchDataById(id, "/advert/advert/").then((data) => populateModal(data, editAdvertModalInputs)).catch((error) => console.error(error)).finally(() => toggleSpinner(editAdvertModal));
+    }
+
+    if (editUserModal) {
+        toggleSpinner(editUserModal); //toggle spinner animation
+        //add elements id to form action
+        editUserModal.action = (editUserModal.action).replace('__ID__', id);
+        //fetch elements data
+        fetchDataById(id, "/dashboard/users/").then((data) => populateModal(data, editUserModalInputs)).catch((error) => console.error(error)).finally(() => toggleSpinner(editUserModal));
     }
     }
 
