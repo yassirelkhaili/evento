@@ -10,74 +10,10 @@ use function Livewire\Volt\{protect, mount, state};
 state([ 'powerups' => [], 'powerupsJSON' => null ]);
 
 name('genesis.Events');
-
-mount(function () {
-    $this->powerupsJSON = json_decode(file_get_contents( public_path('/genesis/power-ups.json')));
-    //dd($powerups);
-    foreach($this->powerupsJSON as $powerup){
-        $repo = key($powerup);
-        $installed = $powerup->{$repo};
-        $this->powerups[] = $this->fetchPowerup($repo, $installed);
-    }
-    
-});
-
-$fetchPowerup = protect(function($repo, $installed){
-    // Fetch the JSON file using the Laravel HTTP client
-    $response = Http::get('https://raw.githubusercontent.com/' . $repo . '/main/powerup.json');
-    
-    // Check if the request was successful
-    if ($response->successful()) {
-        // Decode the JSON response
-        $powerup = (object)$response->json();
-        $powerup->repo = $repo;
-        $powerup->installed = $installed;
-        return $powerup;
-    }
-
-    return [];
-});
-
-$install = function($repo, $index){
-
-    // Write the updated JSON file
-    foreach($this->powerupsJSON as $powerUpIndex => $powerup){
-        if(key($powerup) == $repo){
-            $this->powerupsJSON[$powerUpIndex]->{$repo} = true;
-        }
-    }
-
-    // Specify the file path in the public directory
-    $filePath = public_path('/genesis/power-ups.json');
-
-    // Write the JSON data to the file
-    File::put($filePath, json_encode($this->powerupsJSON, JSON_PRETTY_PRINT));
-
-    Artisan::call('powerup:install ' . $repo);
-
-    $run = $this->powerups[$index]->run_after_install;
-    if(isset($run['commands'])){
-        foreach($run['commands'] as $command){
-            Artisan::call( $command );
-        }
-    }
-
-    if(isset($run['factories'])){
-        foreach($run['factories'] as $factory){
-            $model = $factory['model'];
-            $count = $factory['count'];
-            call_user_func("{$model}::factory", $count)->create();
-        }
-    }
-
-    session()->flash('power-up-install', 'success');
-
-    return redirect()->to('/genesis/power-ups');
-};
 ?>
 
 <x-layouts.marketing>
-    
+    @dd($events)
 
     @volt('genesis-powerups')
     <div class="w-full ">
