@@ -9,7 +9,7 @@ use function Livewire\Volt\{protect, mount, state};
 
 state([ 'powerups' => [], 'powerupsJSON' => null ]);
 
-name('genesis.power-ups');
+name('genesis.Events');
 
 mount(function () {
     $this->powerupsJSON = json_decode(file_get_contents( public_path('/genesis/power-ups.json')));
@@ -74,7 +74,6 @@ $install = function($repo, $index){
 
     return redirect()->to('/genesis/power-ups');
 };
-
 ?>
 
 <x-layouts.marketing>
@@ -83,8 +82,8 @@ $install = function($repo, $index){
     @volt('genesis-powerups')
     <div class="w-full ">
 
-        <x-ui.marketing.breadcrumbs :crumbs="[ ['text' => 'Power-ups'] ]" />
-        <x-ui.marketing.page-header title="Power-Ups" description="Power-ups offer additional features to help you supercharge the beginning of your application journey." />
+        <x-ui.marketing.breadcrumbs :crumbs="[ ['text' => 'Events'] ]" />
+        <x-ui.marketing.page-header title="Events" description="Events offer additional features to help you supercharge the beginning of your application journey." />
 
         <div class="w-full max-w-6xl px-8 mx-auto">
 
