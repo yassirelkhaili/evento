@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //auth routes
-Route::middleware(['auth', 'can:access-admin-dashboard'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     //show Admin dashboard routes
     Route::get('/dashboard/partners', [PartnerController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.partners');
     Route::get('/dashboard', [AdvertController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -54,7 +54,7 @@ Route::middleware(['auth', 'can:access-admin-dashboard'])->group(function () {
     });
 });
 
-Route::middleware(['auth', 'can:access-admin-dashboard', 'can:manage roles'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 Route::get('/dashboard/users', [UserController::class, 'index'])->name('user.index');
 Route::post('dashboard/users/create', [UserController::class,'store'])->name('user.store');
 Route::put("dashboard/users/{user}", [UserController::class,"update"])->name("user.update");
