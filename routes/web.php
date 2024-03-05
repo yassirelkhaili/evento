@@ -2,8 +2,9 @@
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +18,9 @@ use App\Http\Controllers\UserController;
 */
 
 //render routes
-Route::get('/', [Controller::class, 'index'])->name("index");
+Route::get('/', [EventController::class, 'index'])->name("index");
 
-Route::get("advert/show/{id}", [Controller::class, "showAdvert"])->name("adverts.show");
+Route::get("event/show/{id}", [EventController::class, "show"])->name("event.show");
 
 Route::middleware(['auth'])->group(function () {
     //profile routes
@@ -30,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
 
 //auth routes
 Route::middleware(['auth'])->group(function () {
-
+    Route::get('/dashboard', [Controller::class, 'index'])->name('index.dashboard');
 });
 
 Route::middleware(['auth', 'can:manage users'])->group(function () {

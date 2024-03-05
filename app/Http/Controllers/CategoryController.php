@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\EventRepositoryInterface;
 use App\Repositories\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 
-class EventController extends Controller
+class CategoryController extends Controller
 {
-    protected EventRepositoryInterface $eventRepository;
     protected CategoryRepositoryInterface $categoryRepository;
-    public function __construct (EventRepositoryInterface $eventRepository, CategoryRepositoryInterface $categoryRepository) {
-        $this->eventRepository = $eventRepository;
+
+    public function __construct (CategoryRepositoryInterface $categoryRepository) {
         $this->categoryRepository = $categoryRepository;
     }
     /**
@@ -19,9 +17,8 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = $this->eventRepository->getAll();
-        $categories = $this->categoryRepository->getAll();
-        return view('welcome', compact('events', 'categories'));
+        $events = $this->categoryRepository->getAll();
+        return view('welcome', compact('events'));
     }
 
     /**
@@ -37,7 +34,7 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        $this->eventRepository->create($request->input());
+        $this->categoryRepository->create($request->input());
         return redirect()->route("index")->with('success','event created successfuly');
     }
 
@@ -46,7 +43,7 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        $event = $this->eventRepository->getById($id);
+        $event = $this->categoryRepository->getById($id);
         return view("events.edit", compact("event"));
     }
 
@@ -62,7 +59,7 @@ class EventController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->eventRepository->update($id, $request->input());
+        $this->categoryRepository->update($id, $request->input());
         return redirect()->route("index")->with("success","event updated successfuly");
     }
 
@@ -71,7 +68,7 @@ class EventController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->eventRepository->delete($id);
+        $this->categoryRepository->delete($id);
         return redirect()->back()->with('success','event deleted successfully');
     }
 }

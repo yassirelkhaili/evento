@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Skill;
-use Illuminate\View\View;
+use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Requests\ProfileUpdateRequest;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
@@ -17,14 +16,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        $user = $request->user();
-
-        $skills = $user->skills()->pluck("name");
-
-        $availableSkills = Skill::all();
-
-        return view('profile.edit', compact('user', 'skills','availableSkills'));
+        return view('profile.edit', [
+            'user' => $request->user(),
+        ]);
     }
+
     /**
      * Update the user's profile information.
      */

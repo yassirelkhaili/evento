@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 
-        <title>Laravel</title>
+        <title>Evento</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -28,46 +28,61 @@
                     @endauth
                 </div>
             @endif
-
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
                 <div class="flex justify-center">
-                    <img class="h-12 w-auto" src="{{ asset('storage/youtalent/' . "youtalent-high-resolution-logo-transparent.webp") }}" id="welcomeLogo" alt="App Logo">
+                    <x-application-logo />
                 </div>
+                <div class="pt-12">
+                    
+<form class="max-w-lg mx-auto">
+    <div class="flex">
+        <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your Email</label>
+        <button id="dropdown-button" data-dropdown-toggle="dropdown" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button">All categories <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+  </svg></button>
+        <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+            <ul class="text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdown-button" data-element="dropdown-button">
+            @foreach ($categories as $category)
+            <li>
+                <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-md">{{$category->category_name}}</button>
+            </li>
+            @endforeach
+            </ul>
+        </div>
+        <div class="relative w-full">
+            <input type="hidden" name="category" id="category_input">
+            <input type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search by event title" required />
+            <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+                <span class="sr-only">Search</span>
+            </button>
+        </div>
+    </div>
+</form>
+                </div>
+                <div class="mt-8 flex flex-col gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+                        @forelse ($events as $event)
+<div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <a href="#">
+        <img class="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" />
+    </a>
+    <div class="p-5">
+        <a href="#">
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{$event->title}}</h5>
+        </a>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ strlen($event->description) > 150 ? substr($event->description, 0, 170) . '...' : $event->description }}</p>
+        <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Learn more
+             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+        </a>
+    </div>
+</div>
 
-                <div class="mt-16 flex flex-col gap-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                        @forelse ($adverts as $advert)
-                        <a href="{{'/advert/show/' . $advert->id}}" class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
-                            <div class="flex flex-col h-full justify-between items-start">
-                                <div class="h-16 w-16 bg-red-50 dark:bg-red-800/20 flex items-center justify-center rounded-full">
-                                    <img class="rounded-full h-16 w-16" src="{{ asset('storage/logos/' . $advert->partnerLogo) }}" alt="{{ $advert->partnerName }} Logo">
-                                </div>
-
-                                <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">{{ \Illuminate\Support\Str::limit($advert->title, $limit = 100, $end = '...') }}</h2>
-
-                                <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                                    {{ \Illuminate\Support\Str::limit($advert->content, $limit = 200, $end = '...') }}
-                                </p>
-                                <div class="flex justify-between w-full items-center pt-2">
-                                    <div><p class="bg-purple-200 text-purple-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-purple-600 dark:text-purple-300">
-                                        {{$advert->partner->name}}
-                                    </p></div>
-                                    <div class="flex justify-center items-center gap-1">
-                                        <p class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">{{$advert["partner"]["industry"]}}</p>
-                                    </div>
-                                    <p class="
-                                    {{ $advert->partner->size === 'small' ? 'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-300' : '' }}
-                                    {{ $advert->partner->size === 'medium' ? 'bg-gray-500 text-gray-200 dark:bg-gray-700 dark:text-gray-300' : '' }}
-                                    {{ $advert->partner->size === 'large' ? 'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-300' : '' }}
-                                    text-xs font-medium px-2 py-0.5 rounded">
-                                    {{ $advert->partner->size }}
-                                    </p>
-                                </div>
-                            </div>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="self-center shrink-0 stroke-[#038DFE] w-6 h-6 mx-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
-                            </svg>
-                        </a>
                         @empty
                         <div class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
                             <div>
@@ -78,7 +93,7 @@
                         </div>
                         @endforelse
                         </div>
-                            {{$adverts->links()}}
+                            {{$events->links()}}
                     </div>
                 </div>
             </div>

@@ -3,14 +3,14 @@
 namespace App\Repositories;
 
 use App\Models\Event;
-use Illuminate\Support\Facades\Auth;
 
 class EventRepository implements EventRepositoryInterface
 {
     public function getAll()
     {
-        return Event::where('user_id', Auth::id())->get();;
+        return Event::orderBy('created_at', 'desc')->paginate(9);
     }
+
     public function getById($id)
     {
         return Event::findOrFail($id);

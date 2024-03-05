@@ -25,22 +25,14 @@
     @endif
 
     {{-- render the data tables --}}
-    @if (auth()->user())
+    {{-- @if (auth()->user())
     @switch(request()->route()->getName())
-    @case("partner.index")
-    @case("dashboard.partners")
-        <x-partners-table :partners="$partners" :searchQuery="$searchQuery"/>
-        @break
-    @case("advert.index")
-    @case("dashboard")
-        <x-adverts-table :adverts="$adverts" :searchQuery="$searchQuery"/>
-        @break
         @case("dashboard.users")
         @case("user.index")
     <x-users-table :users="$users" :searchQuery="$searchQuery" :availableRoles="$availableRoles"/>    
         @break
     @default
-        <x-adverts-table :adverts="$adverts" :searchQuery="$searchQuery"/>
+        <x-events-table :events="$events" :searchQuery="$searchQuery"/>
         @break
     @endswitch
     @else 
@@ -58,6 +50,6 @@
                 @break;
         @endswitch
     @endif
-
+ --}}
 
 </x-app-layout>
