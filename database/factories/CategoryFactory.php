@@ -4,10 +4,8 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Skill>
- */
-class SkillFactory extends Factory
+
+class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +15,7 @@ class SkillFactory extends Factory
     public function definition(): array
     {
         return [
-            "name" => $this->faker->unique()->word,
+            'category_name' => $this->faker->word,
         ];
     }
 }

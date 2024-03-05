@@ -25,7 +25,7 @@
     @endif
 
     {{-- render the data tables --}}
-    @if (auth()->user()->can("access-admin-dashboard"))
+    @if (auth()->user())
     @switch(request()->route()->getName())
     @case("partner.index")
     @case("dashboard.partners")
