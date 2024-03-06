@@ -137,5 +137,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     editBtns && editBtns.forEach((editBtn) => editBtn.addEventListener("click", handleEditBtnPress));
     //end handle element edit modal
+
+    //handle categories toggle
+
+    const categoryContainers = document.querySelectorAll("[data-element='dropdown-button']");
+    const categoryDropdown = document.getElementById("dropdown");
+    const categoryButton = document.getElementById("dropdown-button");
+    const categoryInput = document.getElementById("category_input");
+
+    const handleCategoryContainerClick = (event) => {
+        const eventTarget = event.target;
+        // set category_name as button text
+        if (categoryButton) categoryButton.firstElementChild.textContent = eventTarget.textContent;
+        // toggle dropdown on click
+        if (categoryDropdown) {
+            categoryDropdown.classList.toggle("hidden");
+            categoryDropdown.classList.toggle("block");
+        }
+        // add button value to search form
+        categoryInput.value = eventTarget.value;    
+    }
+    categoryButton.addEventListener("click",  () => categoryDropdown.classList.toggle("hidden"));
+    categoryContainers && categoryContainers.forEach(categoryContainer => {
+        categoryContainer.addEventListener("click", handleCategoryContainerClick); 
+    });
+    const handleDropdownOutsideClick = (event) => {
+        const eventTarget = event.target;
+        if (!categoryDropdown.contains(eventTarget) ) {
+            categoryDropdown.classList.toggle("hidden");
+        }
+    }
+    document.addEventListener("click", handleDropdownOutsideClick);
 })
 

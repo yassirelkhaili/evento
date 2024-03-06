@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+use Illuminate\Http\Request;
 use App\Repositories\EventRepositoryInterface;
 use App\Repositories\CategoryRepositoryInterface;
-use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
     protected EventRepositoryInterface $eventRepository;
     protected CategoryRepositoryInterface $categoryRepository;
-    public function __construct (EventRepositoryInterface $eventRepository, CategoryRepositoryInterface $categoryRepository) {
+    public function __construct(EventRepositoryInterface $eventRepository, CategoryRepositoryInterface $categoryRepository)
+    {
         $this->eventRepository = $eventRepository;
         $this->categoryRepository = $categoryRepository;
     }
@@ -27,9 +29,17 @@ class EventController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function filter(Request $request)
     {
-        //
+        $searchQuery = $request->input('search');
+        $category = $request->input('category');
+        $categories = $this->categoryRepository->getAll();
+        $query = Event::query();
+        if ($searchQuery) $query->where('title', 'LIKE', '%' . $searchQuery . '%');
+        if ($category) $query->where('category_id', '=', $category);
+
+        $events = $query->paginate(9);
+        return view("welcome", ['events' => $events, 'searchQuery' => $searchQuery, 'categories' => $categories]);
     }
 
     /**
@@ -38,7 +48,7 @@ class EventController extends Controller
     public function store(Request $request)
     {
         $this->eventRepository->create($request->input());
-        return redirect()->route("index")->with('success','event created successfuly');
+        return redirect()->route("index")->with('success', 'event created successfuly');
     }
 
     /**
@@ -63,7 +73,7 @@ class EventController extends Controller
     public function update(Request $request, string $id)
     {
         $this->eventRepository->update($id, $request->input());
-        return redirect()->route("index")->with("success","event updated successfuly");
+        return redirect()->route("index")->with("success", "event updated successfuly");
     }
 
     /**
@@ -72,6 +82,6 @@ class EventController extends Controller
     public function destroy(string $id)
     {
         $this->eventRepository->delete($id);
-        return redirect()->back()->with('success','event deleted successfully');
+        return redirect()->back()->with('success', 'event deleted successfully');
     }
 }
