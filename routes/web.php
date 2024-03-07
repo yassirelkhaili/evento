@@ -38,6 +38,7 @@ Route::middleware(['auth', 'can:manage own events'])->group(function() {
     Route::get('/dashboard/events', [EventController::class, 'indexOwnEvents'])->name('organizer.events');
     Route::put('/dashboard/events/{event}', [EventController::class, 'update'])->name('event.update');
     Route::delete("dashboard/events/{event}", [EventController::class,"destroy"])->name("event.destroy");
+    Route::post("dashboard/events/create", [EventController::class,"store"])->name("event.store");
 });
 
 Route::middleware(['auth', 'can:manage users'])->group(function () {

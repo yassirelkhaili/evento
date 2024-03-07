@@ -88,6 +88,7 @@ class EventController extends Controller
     public function indexOwnEvents(Request $request) {
         $searchQuery = $request->input('search');
             $events = $this->eventRepository->getOwnEvents();
-            return view('dashboard', compact('events', 'searchQuery'));
+            $categories = $this->categoryRepository->getAll();
+            return view('dashboard', compact('events', 'searchQuery', 'categories'));
     }
 }

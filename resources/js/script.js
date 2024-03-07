@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // add button value to search form
         categoryInput.value = eventTarget.value;    
     }
-    categoryButton.addEventListener("click",  () => categoryDropdown.classList.toggle("hidden"));
+    categoryButton && categoryButton.addEventListener("click",  () => categoryDropdown.classList.toggle("hidden"));
     categoryContainers && categoryContainers.forEach(categoryContainer => {
         categoryContainer.addEventListener("click", handleCategoryContainerClick); 
     });
