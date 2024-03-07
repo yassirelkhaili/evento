@@ -15,4 +15,8 @@ interface EventRepositoryInterface
     public function getAll();
 
     public function getOwnEvents();
+
+    public function getPendingEvents();
+
+    public function getEventCount();
 }

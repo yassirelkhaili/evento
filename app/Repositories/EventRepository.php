@@ -35,8 +35,18 @@ class EventRepository implements EventRepositoryInterface
         $Event->delete();
     }
 
-    public function getOwnEvents(){
-        $events = Event::with('category')->where('user_id', Auth::user()->id)->get();
+    public function getOwnEvents() {
+        $events = Event::with('category')->where('user_id', Auth::user()->id)->paginate(10);
         return $events;
+    }
+
+    public function getPendingEvents() {
+        $events = Event::with('category')->where('status', 'pending')->where('validation_method', 'manual')->paginate(10);
+        return $events;
+    }
+
+    public function getEventCount() {
+        $eventCount = Event::count();
+        return $eventCount;
     }
 }

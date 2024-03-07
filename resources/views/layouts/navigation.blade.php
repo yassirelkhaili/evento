@@ -10,18 +10,18 @@
                     </a>
                 </div>
                 <!-- Navigation Links -->
-               @if (auth()->check() && auth()->user()->can("access-admin-dashboard"))
+               @if (auth()->check() && auth()->user()->role('administrator'))
                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Announcements') }}
+                <x-nav-link :href="route('index.dashboard')" :active="request()->routeIs('index.dashboard')">
+                    {{ __('Events') }}
                 </x-nav-link>
             </div>
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <x-nav-link :href="route('dashboard.partners')" :active="request()->routeIs('dashboard.partners')">
-                    {{ __('Partners') }}
+                <x-nav-link :href="route('index.categories')" :active="request()->routeIs('index.categories')">
+                    {{ __('Categories') }}
                 </x-nav-link>
             </div>
-            @if (auth()->user()->hasPermissionTo('manage roles'))
+            @if (auth()->user()->hasPermissionTo('manage users'))
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                 <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
                     {{ __('Users') }}

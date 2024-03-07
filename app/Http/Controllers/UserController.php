@@ -31,7 +31,7 @@ class UserController extends BaseController
               ->orWhere('role', 'LIKE', '%' . $searchQuery . '%');
     }
     $availableRoles = Role::all()->pluck('name', 'id');
-    $users = $query->select('name', 'id', 'email', 'role')->with('roles')->paginate(10);
+    $users = $query->select('name', 'id', 'email')->with('roles')->paginate(10);
         return view("dashboard", ['users' => $users, 'availableRoles' => $availableRoles, 'searchQuery' => $searchQuery]);
     }
 

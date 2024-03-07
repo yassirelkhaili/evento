@@ -159,7 +159,7 @@
                     <tbody>
                         @forelse ($events as $event)
                             <tr class="border-b dark:border-gray-700">
-                                <td class="px-4 py-3 text-slate-50">{{ $event->title }}</td>
+                                <td class="px-4 py-3 dark:text-slate-50 text-gray-900">{{ $event->title }}</td>
                                 <td class="px-4 py-3">{{ $event->description }}</td>
                                 <td class="px-4 py-3">{{ $event->category->category_name }}</td>
                                 <td class="px-4 py-3">{{ $event->address }}</td>

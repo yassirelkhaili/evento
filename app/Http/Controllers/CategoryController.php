@@ -17,17 +17,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $events = $this->categoryRepository->getAll();
-        return view('welcome', compact('events'));
+        $categories = $this->categoryRepository->getAll();
+        $searchQuery = '';
+        return view('dashboard', compact('categories', 'searchQuery'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,7 +29,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $this->categoryRepository->create($request->input());
-        return redirect()->route("index")->with('success','event created successfuly');
+        return redirect()->route("index")->with('success','Category created successfuly.');
     }
 
     /**
@@ -43,8 +37,8 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $event = $this->categoryRepository->getById($id);
-        return view("events.edit", compact("event"));
+        $Category = $this->categoryRepository->getById($id);
+        return view("Categorys.edit", compact("Category"));
     }
 
     /**
@@ -60,7 +54,7 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->categoryRepository->update($id, $request->input());
-        return redirect()->route("index")->with("success","event updated successfuly");
+        return redirect()->route("index")->with("success","Category updated successfuly.");
     }
 
     /**
@@ -69,6 +63,6 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $this->categoryRepository->delete($id);
-        return redirect()->back()->with('success','event deleted successfully');
+        return redirect()->back()->with('success','Category deleted successfully.');
     }
 }

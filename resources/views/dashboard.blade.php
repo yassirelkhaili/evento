@@ -33,7 +33,6 @@
         </div>
     </div>
     @endif
-
     {{-- render the data tables --}}
     @if (auth()->user())
     @switch(request()->route()->getName())
@@ -41,18 +40,31 @@
         @case("user.index")
     <x-users-table :users="$users" :searchQuery="$searchQuery" :availableRoles="$availableRoles"/>    
         @break
+        @case("index.categories")
+        <x-category-table :categories="$categories" :searchQuery="$searchQuery" />
+        @break
     @default
     <section class="bg-white dark:bg-gray-900">
         <div class="max-w-screen-xl px-4 pt-8 mx-auto text-center lg:px-6">
-            <dl class="grid max-w-screen-md mx-auto text-gray-900 sm:grid-cols-2 dark:text-white">
+            <dl class="grid max-w-screen-md mx-auto text-gray-900 {{auth()->user()->can("manage users") ? 'sm:grid-cols-4' : 'sm:grid-cols-2'}} dark:text-white">
                 <div class="flex flex-col items-center justify-center">
-                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{$events->count()}}</dt>
+                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{$eventCount}}</dt>
                     <dd class="font-light text-gray-500 dark:text-gray-400">events</dd>
                 </div>
                 <div class="flex flex-col items-center justify-center">
                     <dt class="mb-2 text-3xl md:text-4xl font-extrabold">1B+</dt>
                     <dd class="font-light text-gray-500 dark:text-gray-400">bookings</dd>
                 </div>
+                @if(auth()->user()->can("manage users"))
+                <div class="flex flex-col items-center justify-center">
+                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{$categoryCount}}</dt>
+                    <dd class="font-light text-gray-500 dark:text-gray-400">categories</dd>
+                </div>
+                <div class="flex flex-col items-center justify-center">
+                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{$userCount}}</dt>
+                    <dd class="font-light text-gray-500 dark:text-gray-400">users</dd>
+                </div>
+                @endif
             </dl>
         </div>
       </section>

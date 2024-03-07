@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -96,7 +97,18 @@ class EventController extends Controller
     public function indexOwnEvents(Request $request) {
         $searchQuery = $request->input('search');
             $events = $this->eventRepository->getOwnEvents();
+            $eventCount = $events->count();
             $categories = $this->categoryRepository->getAll();
-            return view('dashboard', compact('events', 'searchQuery', 'categories'));
+            return view('dashboard', compact('events', 'searchQuery', 'categories', 'eventCount'));
+    }
+
+    public function showPendingEvents(Request $request) {
+        $searchQuery = $request->input('search');
+            $events = $this->eventRepository->getPendingEvents();
+            $eventCount = $this->eventRepository->getEventCount();
+            $categories = $this->categoryRepository->getAll();
+            $categoryCount = $categories->count();
+            $userCount = User::count();
+            return view('dashboard', compact('events', 'searchQuery', 'categories', 'eventCount', 'categoryCount', 'userCount'));
     }
 }

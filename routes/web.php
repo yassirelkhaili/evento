@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,10 +30,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-//auth routes
-Route::middleware(['auth', 'can:manage event categories'])->group(function () {
-    Route::get('/dashboard', [Controller::class, 'index'])->name('index.dashboard');
-});
 
 Route::middleware(['auth', 'can:manage own events'])->group(function() {
     Route::get('/dashboard/events', [EventController::class, 'indexOwnEvents'])->name('organizer.events');
@@ -42,11 +39,16 @@ Route::middleware(['auth', 'can:manage own events'])->group(function() {
 });
 
 Route::middleware(['auth', 'can:manage users'])->group(function () {
-Route::get('/dashboard/users', [UserController::class, 'index'])->name('user.index');
-Route::post('dashboard/users/create', [UserController::class,'store'])->name('user.store');
-Route::put("dashboard/users/{user}", [UserController::class,"update"])->name("user.update");
-Route::delete("dashboard/users/{user}", [UserController::class,"destroy"])->name("user.destroy");
-Route::get("/dashboard/users/{user}", [UserController::class,"show"])->name("user.show");
+    Route::get('/dashboard', [EventController::class, 'showPendingEvents'])->name('index.dashboard');
+    Route::get('/dashboard/categories', [CategoryController::class, 'index'])->name('index.categories');
+    Route::put('/dashboard/categories/{category}', [CategoryController::class, 'update'])->name('category.update');
+    Route::delete("dashboard/categories/{category}", [CategoryController::class,"destroy"])->name("category.destroy");
+    Route::post("dashboard/categories/create", [CategoryController::class,"store"])->name("category.store");
+    Route::get('/dashboard/users', [UserController::class, 'index'])->name('user.index');
+    Route::post('dashboard/users/create', [UserController::class,'store'])->name('user.store');
+    Route::put("dashboard/users/{user}", [UserController::class,"update"])->name("user.update");
+    Route::delete("dashboard/users/{user}", [UserController::class,"destroy"])->name("user.destroy");
+    Route::get("/dashboard/users/{user}", [UserController::class,"show"])->name("user.show");
 });
 
 require __DIR__ . '/auth.php';
