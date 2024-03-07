@@ -1,5 +1,5 @@
 <!-- Start block -->
-<section class="bg-gray-50 dark:bg-gray-900 pt-12 antialiased">
+<section class="bg-gray-50 dark:bg-gray-900 pt-8 antialiased">
     <div class="mx-auto max-w-screen-xl">
         <!-- Start coding here -->
         <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
