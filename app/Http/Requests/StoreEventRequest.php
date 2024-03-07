@@ -31,7 +31,7 @@ class StoreEventRequest extends FormRequest
             'available_seats' => 'required|integer|min:0',
             'capacity' => 'required|integer|min:0|gte:available_seats',
             'description' => 'required|string',
-            'event_picture' => 'sometimes|file|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'event_picture' => 'sometimes|file|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }

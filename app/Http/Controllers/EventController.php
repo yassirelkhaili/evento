@@ -61,6 +61,7 @@ class EventController extends Controller
         $eventData['date'] = format_date($eventData['date']);
         $eventData['category_id'] = $eventData['category'];
         unset($eventData['category']);
+        $eventData['validation_method'] === 'automatic' ? $eventData['status'] = 'published' : $eventData['status'] = 'pending';
         $this->eventRepository->create($eventData);
         return redirect()->route("organizer.events")->with('success', 'Event created successfuly.');
     }

@@ -21,6 +21,7 @@ class Event extends Model
         'category_id',
         'user_id',
         'event_picture',
+        'status'
     ];
 
     public function category()
