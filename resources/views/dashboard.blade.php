@@ -32,7 +32,7 @@
     <x-users-table :users="$users" :searchQuery="$searchQuery" :availableRoles="$availableRoles"/>    
         @break
     @default
-        <x-events-table :events="$events" :searchQuery="$searchQuery"/>
+        <x-events-table :events="$events" :searchQuery="$searchQuery" :categories="$categories"/>
         @break
     @endswitch
     @else 
