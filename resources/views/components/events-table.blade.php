@@ -245,7 +245,7 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <form action="{{ route('event.store') }}" method="POST">
+            <form action="{{ route('event.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
@@ -257,7 +257,7 @@
                     </div>
                     <div><label for="partner"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label><select
-                            name="partnerID" id="partner"
+                            name="category" id="partner"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             @forelse ($categories as $category)
                                 <option value={{ $category->id }}>{{ $category->category_name }}</option>
@@ -270,30 +270,39 @@
                     <div>
                         <label for="name"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                        <input type="text" name="title" id="name"
+                        <input type="text" name="address" id="name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Type event address" required>
                     </div>
                     <div><label for="partner"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Validation
-                            method</label><select name="partnerID" id="partner"
+                            method</label><select name="validation_method" id="partner"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                             <option value="manual">Manual</option>
                             <option value="automatic">Automatic</option>
                         </select></div>
                 </div>
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                    <div>
-                        <label for="name"
+
+                        <div class="relative max-w-sm">
+                            <label for="partner"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date</label>
-                        <input type="text" name="date" id="name"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            placeholder="Type event date" required>
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                </svg>
+                            </div>
+                            <input name="date" datepicker type="text"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Select date">
                     </div>
                     <div>
                         <label for="name"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Picture</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Picture</label>
                         <input
+                        name="event_picture"
                             class="block w-full mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                             id="default_size" type="file">
                     </div>
@@ -303,20 +312,20 @@
                         <label for="name"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Available
                             seats</label>
-                        <input type="text" name="title" id="name"
+                        <input type="text" name="available_seats" id="name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Type available seats number" required>
                     </div>
                     <div>
                         <label for="name"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Capacity</label>
-                        <input type="text" name="title" id="name"
+                        <input type="text" name="capacity" id="name"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Type events maximum capacity" required>
                     </div>
                     <div class="sm:col-span-2"><label for="description"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                        <textarea name="content" id="description" rows="4"
+                        <textarea name="description" id="description" rows="4"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             placeholder="Write event description here" required></textarea>
                     </div>

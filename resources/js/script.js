@@ -163,9 +163,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     const toggleCategorySearchDropdown = (event) => {
         const eventTarget = event.target;
+       if (categoryDropdown) {
         if (!categoryDropdown.contains(eventTarget) && !categoryButton.contains(eventTarget) && !categoryDropdown.classList.contains("hidden")) {
             categoryDropdown.classList.toggle("hidden");
         }
+       }
     }
     document.addEventListener("click", toggleCategorySearchDropdown);
 })

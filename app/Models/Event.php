@@ -19,7 +19,8 @@ class Event extends Model
         'capacity',
         'validation_method',
         'category_id',
-        'user_id'
+        'user_id',
+        'event_picture',
     ];
 
     public function category()

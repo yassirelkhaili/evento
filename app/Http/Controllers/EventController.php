@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Repositories\EventRepositoryInterface;
@@ -45,9 +46,15 @@ class EventController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreEventRequest $request)
     {
-        $this->eventRepository->create($request->input());
+        $eventData = $request->input();
+        if ($request->hasFile('event_picture')) {
+            $path = $request->file('event_picture')->store('public/events');
+            $relativePath = str_replace('public/', 'storage/', $path);
+        }
+        $eventData['event_picture'] = $relativePath;
+        $this->eventRepository->create($eventData);
         return redirect()->route("index")->with('success', 'event created successfuly');
     }
 

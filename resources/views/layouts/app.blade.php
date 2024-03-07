@@ -13,6 +13,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js', 'node_modules/flowbite/dist/flowbite.min.js', 'resources/js/script.js'])
         <script src="{{ asset('assets/js/theme.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
