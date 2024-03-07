@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,6 +27,7 @@ class EventFactory extends Factory
             'capacity' => $this->faker->numberBetween(100, 200),
             'validation_method' => $this->faker->randomElement(['manual', 'automatic']),
             'category_id' => Category::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id,
         ];
     }
 }

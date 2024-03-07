@@ -30,8 +30,14 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //auth routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'can:manage event categories'])->group(function () {
     Route::get('/dashboard', [Controller::class, 'index'])->name('index.dashboard');
+});
+
+Route::middleware(['auth', 'can:manage own events'])->group(function() {
+    Route::get('/dashboard/events', [EventController::class, 'indexOwnEvents'])->name('organizer.events');
+    Route::put('/dashboard/events/{event}', [EventController::class, 'update'])->name('event.update');
+    Route::delete("dashboard/events/{event}", [EventController::class,"destroy"])->name("event.destroy");
 });
 
 Route::middleware(['auth', 'can:manage users'])->group(function () {

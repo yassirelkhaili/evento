@@ -10,6 +10,18 @@ class Event extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'address',
+        'date',
+        'available_seats',
+        'capacity',
+        'validation_method',
+        'category_id',
+        'user_id'
+    ];
+
     public function category()
     {
         return $this->belongsTo(Category::class);

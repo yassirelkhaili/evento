@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Event;
+use Illuminate\Support\Facades\Auth;
 
 class EventRepository implements EventRepositoryInterface
 {
@@ -32,5 +33,10 @@ class EventRepository implements EventRepositoryInterface
     {
         $Event = $this->getById($id);
         $Event->delete();
+    }
+
+    public function getOwnEvents(){
+        $events = Event::with('category')->where('user_id', Auth::user()->id)->get();
+        return $events;
     }
 }

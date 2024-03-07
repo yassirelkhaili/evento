@@ -13,4 +13,6 @@ interface EventRepositoryInterface
     public function delete($id);
 
     public function getAll();
+
+    public function getOwnEvents();
 }

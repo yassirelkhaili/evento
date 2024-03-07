@@ -161,12 +161,12 @@ document.addEventListener("DOMContentLoaded", () => {
     categoryContainers && categoryContainers.forEach(categoryContainer => {
         categoryContainer.addEventListener("click", handleCategoryContainerClick); 
     });
-    const handleDropdownOutsideClick = (event) => {
+    const toggleCategorySearchDropdown = (event) => {
         const eventTarget = event.target;
-        if (!categoryDropdown.contains(eventTarget) ) {
+        if (!categoryDropdown.contains(eventTarget) && !categoryButton.contains(eventTarget) && !categoryDropdown.classList.contains("hidden")) {
             categoryDropdown.classList.toggle("hidden");
         }
     }
-    document.addEventListener("click", handleDropdownOutsideClick);
+    document.addEventListener("click", toggleCategorySearchDropdown);
 })
 

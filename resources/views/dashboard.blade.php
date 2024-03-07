@@ -25,7 +25,7 @@
     @endif
 
     {{-- render the data tables --}}
-    {{-- @if (auth()->user())
+    @if (auth()->user())
     @switch(request()->route()->getName())
         @case("dashboard.users")
         @case("user.index")
@@ -50,6 +50,6 @@
                 @break;
         @endswitch
     @endif
- --}}
+
 
 </x-app-layout>

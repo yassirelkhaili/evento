@@ -84,4 +84,10 @@ class EventController extends Controller
         $this->eventRepository->delete($id);
         return redirect()->back()->with('success', 'event deleted successfully');
     }
+
+    public function indexOwnEvents(Request $request) {
+        $searchQuery = $request->input('search');
+            $events = $this->eventRepository->getOwnEvents();
+            return view('dashboard', compact('events', 'searchQuery'));
+    }
 }
