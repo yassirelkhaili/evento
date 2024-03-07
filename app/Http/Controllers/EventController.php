@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreEventRequest;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreEventRequest;
 use App\Repositories\EventRepositoryInterface;
 use App\Repositories\CategoryRepositoryInterface;
 
@@ -52,10 +53,16 @@ class EventController extends Controller
         if ($request->hasFile('event_picture')) {
             $path = $request->file('event_picture')->store('public/events');
             $relativePath = str_replace('public/', 'storage/', $path);
+        } else {
+            return redirect()->route('organizer.events')->withErrors(['event_picture' => 'The event picture is required.'])->withInput();
         }
         $eventData['event_picture'] = $relativePath;
+        $eventData['user_id'] = Auth::user()->id;
+        $eventData['date'] = format_date($eventData['date']);
+        $eventData['category_id'] = $eventData['category'];
+        unset($eventData['category']);
         $this->eventRepository->create($eventData);
-        return redirect()->route("index")->with('success', 'event created successfuly');
+        return redirect()->route("organizer.events")->with('success', 'Event created successfuly.');
     }
 
     /**
@@ -65,13 +72,6 @@ class EventController extends Controller
     {
         $event = $this->eventRepository->getById($id);
         return view("events.edit", compact("event"));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
     }
 
     /**
@@ -89,7 +89,7 @@ class EventController extends Controller
     public function destroy(string $id)
     {
         $this->eventRepository->delete($id);
-        return redirect()->back()->with('success', 'event deleted successfully');
+        return redirect()->back()->with('success', 'Event deleted successfully.');
     }
 
     public function indexOwnEvents(Request $request) {

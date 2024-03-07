@@ -24,6 +24,16 @@
     </div>
     @endif
 
+    @if(session('success'))
+    <div class="max-w-7xl mx-auto pt-12">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="py-3 px-6  text-gray-900 dark:text-gray-100">
+                {{session()->get('success')}}
+            </div>
+        </div>
+    </div>
+    @endif
+
     {{-- render the data tables --}}
     @if (auth()->user())
     @switch(request()->route()->getName())
