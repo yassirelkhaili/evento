@@ -70,7 +70,7 @@
                         @forelse ($events as $event)
 <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <a href="#">
-        <img class="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" />
+        <img class="h-32 w-full" src="{{asset('storage/events/' . $event->event_picture)}}" alt="" />
     </a>
     <div class="p-5">
         <a href="#">

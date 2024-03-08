@@ -52,12 +52,13 @@ class EventController extends Controller
     {
         $eventData = $request->input();
         if ($request->hasFile('event_picture')) {
-            $path = $request->file('event_picture')->store('public/events');
-            $relativePath = str_replace('public/', 'storage/', $path);
+            $file = $request->file('event_picture');
+            $filename = time() . '.' . strtolower($file->getClientOriginalExtension());
+             $file->storeAs('public/events', $filename);
         } else {
             return redirect()->route('organizer.events')->withErrors(['event_picture' => 'The event picture is required.'])->withInput();
         }
-        $eventData['event_picture'] = $relativePath;
+        $eventData['event_picture'] = $filename;
         $eventData['user_id'] = Auth::user()->id;
         $eventData['date'] = format_date($eventData['date']);
         $eventData['category_id'] = $eventData['category'];

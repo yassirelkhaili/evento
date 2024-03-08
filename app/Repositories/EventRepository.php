@@ -9,7 +9,7 @@ class EventRepository implements EventRepositoryInterface
 {
     public function getAll()
     {
-        return Event::orderBy('created_at', 'desc')->paginate(9);
+        return Event::orderBy('created_at', 'desc')->where('status', 'published')->paginate(9);
     }
 
     public function getById($id)

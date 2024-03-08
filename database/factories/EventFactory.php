@@ -18,6 +18,12 @@ class EventFactory extends Factory
      */
     public function definition(): array
     {
+        $targetDir = public_path('storage/events');;
+
+        if (!file_exists($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
         return [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
@@ -28,6 +34,7 @@ class EventFactory extends Factory
             'validation_method' => $this->faker->randomElement(['manual', 'automatic']),
             'category_id' => Category::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
+            'event_picture' => basename($this->faker->image($targetDir, 640, 480, 'events', true))
         ];
     }
 }

@@ -37,9 +37,9 @@ class AuthenticatedSessionController extends Controller
             // Redirect users based on their roles
             switch ($roles[0]) {
                 case 'administrator':
-                    return redirect()->route('dashboard');
+                    return redirect()->route('index.dashboard');
                 case 'organizer':
-                    return redirect()->route('dashboard.events');
+                    return redirect()->route('organizer.events');
                 default:
                     return redirect(RouteServiceProvider::HOME);
             }
