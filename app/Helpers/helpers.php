@@ -2,10 +2,10 @@
 
 if (!function_exists('format_date')) {
     /**
-     * Reverse the order of items in a delimited string.
+     * Format date by reversing the order of items in a delimited string and replacing the delimiter '/' with '-'.
      *
      * @param  string  $string
-     * @param  string  $delimiter
+     * @param  string  $delimiter (optional)
      * @return string
      */
     function format_date($string, $delimiter = '/') {

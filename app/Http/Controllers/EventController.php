@@ -74,7 +74,7 @@ class EventController extends Controller
     public function show(string $id)
     {
         $event = $this->eventRepository->getById($id);
-        return view("events.edit", compact("event"));
+        return view("profile.show", compact("event"));
     }
 
     /**

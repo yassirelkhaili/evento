@@ -31,59 +31,56 @@
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
                 <div class="mt-16 flex flex-col gap-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                        <div href="https://laravel.com/docs" class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
-                            <div class="flex flex-col gap-2 justify-center items-start">
+                        <div class="min-w-[30rem] scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+                            <div class="flex flex-col gap-2 justify-center items-start w-full">
                                 <div class="h-16 w-16 bg-red-50 dark:bg-red-800/20 flex items-center justify-center rounded-full">
-                                    <img class="rounded-full h-16 w-16" src="{{ asset('storage/logos/' . $advert["partner"]["logo"]) }}" alt="{{ $advert["partner"]["name"] }} Logo">
+                                    <img class="rounded-full h-16 w-16" src="{{asset('storage/events/' . $event->event_picture)}}" alt="event Logo">
                                 </div>
 
-                                <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">{{$advert["title"]}}</h2>
+                                <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">{{$event->title}}</h2>
 
                                 <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                                    {{$advert["content"]}}
+                                    {{$event->description}}
                                 </p>
-                                <div class="flex justify-between w-full items-center pt-1">
+                                <div class="flex justify-between w-full items-center pt-1 w-full">
                                     <div><p class="bg-purple-200 text-purple-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-purple-600 dark:text-purple-300">
-                                        {{$advert["partner"]["name"]}}
+                                        {{$event->category->category_name}}
                                     </p></div>
                                     <div class="flex justify-center items-center gap-1">
-                                        <p class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">{{$advert["partner"]["industry"]}}</p>
+                                        <p class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">{{$event->date}}</p>
                                     </div>
-                                    <p class="
-                                    {{ $advert["partner"]["size"] === 'small' ? 'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-300' : '' }}
-                                    {{ $advert["partner"]["size"] === 'medium' ? 'bg-gray-500 text-gray-200 dark:bg-gray-700 dark:text-gray-300' : '' }}
-                                    {{ $advert["partner"]["size"] === 'large' ? 'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-300' : '' }}
-                                    text-xs font-medium px-2 py-0.5 rounded">
-                                    {{ $advert["partner"]["size"] }}
+                                    <p class="bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-300 text-xs font-medium px-2 py-0.5 rounded">
+                                    {{ $event->address}}
                                     </p>
                                 </div>
                                 <div class="flex flex-col gap-1 justify-center items-start pt-1">
-                                    <p class="text-grey-500 dark:text-white">Required Skills: </p>
+                                    <p class="text-grey-500 dark:text-white">Available seats: </p>
                                     <div class="flex gap-2 flex-wrap justify-center items-center">
-                                        @forelse ($advert["skills"] as $skill)
                                     <div class="flex flex-row gap-1">
-                                        <p class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">{{ $skill }}</p>
+                                        <p class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">{{ $event->available_seats }}</p>
                                     </div>
-                                        @empty
-                                        <p class="text-grey-500 dark:text-white">No skills are required for this position</p>
-                                    @endforelse
                                     </div>
+                                    <div class="flex flex-col gap-1 justify-center items-start pt-1">
+                                        <p class="text-grey-500 dark:text-white">Capacity: </p>
+                                        <div class="flex gap-2 flex-wrap justify-center items-center">
+                                        <div class="flex flex-row gap-1">
+                                            <p class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">{{ $event->capacity }}</p>
+                                        </div>
+                                        </div>
                                 </div>
-                                @if (auth()->check())
                                 <div class="pt-1 flex flex-col gap-2 justify-center items-start">
                                     <h5 class="text-grey-500 dark:text-white">Apply Now:</h5>
                                     <form action="{{ route("application.store") }}" method="post">
                                         @csrf
                                         <input type="hidden" name="advertID" value={{ $advert['id'] }}>
-                                        <button type="submit" id="createProductModalButton" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                                        <a href={{route('ticket.index')}} type="submit" id="createProductModalButton" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                                             </svg>
-                                            Click to Apply
-                                        </button>
+                                           Book event now
+                                        </a>
                                     </form>
                                 </div>
-                                @endif
                             </div>
                         </div>
                         </div>
