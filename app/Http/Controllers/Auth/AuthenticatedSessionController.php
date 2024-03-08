@@ -40,6 +40,8 @@ class AuthenticatedSessionController extends Controller
                     return redirect()->route('index.dashboard');
                 case 'organizer':
                     return redirect()->route('organizer.events');
+                case 'user':
+                    return redirect()->intended(RouteServiceProvider::HOME);
                 default:
                     return redirect(RouteServiceProvider::HOME);
             }

@@ -10,7 +10,7 @@
                     </a>
                 </div>
                 <!-- Navigation Links -->
-               @if (auth()->check() && auth()->user()->role('administrator'))
+               @if (auth()->user()->hasPermissionTo('manage users'))
                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                 <x-nav-link :href="route('index.dashboard')" :active="request()->routeIs('index.dashboard')">
                     {{ __('Events') }}
@@ -21,25 +21,25 @@
                     {{ __('Categories') }}
                 </x-nav-link>
             </div>
-            @if (auth()->user()->hasPermissionTo('manage users'))
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                 <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
                     {{ __('Users') }}
                 </x-nav-link>
             </div>
-            @endif
         </div>
-        @else
-        {{-- <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-            <x-nav-link :href="route('dashboard.applications')" :active="request()->routeIs('dashboard.applications')">
-                {{ __('Applications') }}
-            </x-nav-link>
         </div>
+        @elseif (auth()->user()->hasPermissionTo('manage own events'))
         <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-            <x-nav-link :href="route('dashboard.recommendation')" :active="request()->routeIs('dashboard.recommendation')">
-                {{ __('Job Recommendations') }}
-            </x-nav-link>
-        </div> --}}
+        <x-nav-link :href="route('organizer.events')" :active="request()->routeIs('organizer.events')">
+            {{ __('Events') }}
+        </x-nav-link>
+    </div>
+</div>
+    @else
+    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+        <x-nav-link :href="route('ticket.index')" :active="request()->routeIs('ticket.index')">
+            {{ __('Tickets') }}
+        </x-nav-link>
     </div>
                @endif
 

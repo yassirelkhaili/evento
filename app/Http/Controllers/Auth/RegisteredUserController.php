@@ -29,10 +29,11 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => 'required|in:user,organizer',
         ]);
 
         $user = User::create([
@@ -41,12 +42,16 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $user->assignRole("organizer");
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect()->route("dashboard.events");
+        if ($validatedData['role'] === 'user') {
+            $user->assignRole('user');
+            event(new Registered($user));
+            Auth::login($user);
+            return redirect()->route("ticket.index");
+        } else {
+            $user->assignRole("organizer");
+            event(new Registered($user));
+            Auth::login($user);
+            return redirect()->route("organizer.events");
+        }
     }
 }

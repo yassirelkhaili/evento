@@ -43,6 +43,9 @@
         @case("index.categories")
         <x-category-table :categories="$categories" :searchQuery="$searchQuery" />
         @break
+        @case("ticket.index")
+        <x-ticket-table :tickets="$tickets" :searchQuery="$searchQuery" />
+        @break
     @default
     <section class="bg-white dark:bg-gray-900">
         <div class="max-w-screen-xl px-4 pt-8 mx-auto text-center lg:px-6">
