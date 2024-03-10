@@ -46,12 +46,12 @@ class RegisteredUserController extends Controller
             $user->assignRole('user');
             event(new Registered($user));
             Auth::login($user);
-            return redirect()->route("ticket.index");
-        } else {
-            $user->assignRole("organizer");
+            return redirect()->route("bookings.index");
+        }
+
+        $user->assignRole("organizer");
             event(new Registered($user));
             Auth::login($user);
             return redirect()->route("organizer.events");
-        }
     }
 }

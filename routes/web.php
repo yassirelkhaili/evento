@@ -20,9 +20,9 @@ use App\Http\Controllers\CategoryController;
 */
 
 //render routes
-Route::get('/', [EventController::class, 'index'])->name("index");
+Route::get('/', [EventController::class, 'index'])->name("index.welcome");
 Route::get('/filter', [EventController::class, 'filter'])->name("index.filter");
-Route::get("event/show/{id}", [EventController::class, "show"])->name("event.show");
+Route::get("event/show/{id}", [EventController::class, "showSingleEvent"])->name("event.showSingle");
 
 Route::middleware(['auth'])->group(function () {
     //profile routes
@@ -41,6 +41,7 @@ Route::middleware(['auth', 'can:manage own events'])->group(function() {
     Route::put('/dashboard/events/{event}', [EventController::class, 'update'])->name('event.update');
     Route::delete("dashboard/events/{event}", [EventController::class,"destroy"])->name("event.destroy");
     Route::post("dashboard/events/create", [EventController::class,"store"])->name("event.store");
+    Route::get("/dashboard/events/{event}", [EventController::class,"show"])->name("event.show");
 });
 
 Route::middleware(['auth', 'can:manage users'])->group(function () {

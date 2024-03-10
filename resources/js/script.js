@@ -49,21 +49,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const populateModal = (data, inputs) => {
         inputs.forEach((modalInput) => {
-            if (modalInput.tagName.toLowerCase() === 'select') {
-                for (const option of modalInput.options) {
-                    if ((option.value === data.size) || (parseInt(option.value) === data.partnerID) || (option.textContent === data.role)) {
-                        option.selected = true;
-                        break;
+            if(modalInput.name !== "event_picture") {
+                if (modalInput.tagName.toLowerCase() === 'select') {
+                    for (const option of modalInput.options) {
+                        if ((option.value === data.size) || (parseInt(option.value) === data.partnerID) || (option.textContent === data.role)) {
+                            option.selected = true;
+                            break;
+                        }
                     }
+                } else {
+                    if (modalInput.name in data) modalInput.value = data[modalInput.name];
                 }
-            } else {
-                if (modalInput.name in data) modalInput.value = data[modalInput.name];
             }
         });
     }
 
     const editPartnerModal = document.getElementById("editPartnerForm");
-    const editAdvertModal = document.getElementById("editAdvertForm");
+    const editAdvertModal = document.getElementById("editeventForm");
     const editUserModal = document.getElementById("editUserForm");
 
     const toggleSpinner = (modal) => {
@@ -123,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
         //add elements id to form action
         editAdvertModal.action = (editAdvertModal.action).replace('__ID__', id);
         //fetch elements data
-        fetchDataById(id, "/advert/advert/").then((data) => populateModal(data, editAdvertModalInputs)).catch((error) => console.error(error)).finally(() => toggleSpinner(editAdvertModal));
+        fetchDataById(id, "/dashboard/events/").then((data) => populateModal(data, editAdvertModalInputs)).catch((error) => console.error(error)).finally(() => toggleSpinner(editAdvertModal));
     }
 
     if (editUserModal) {

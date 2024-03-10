@@ -371,6 +371,7 @@
             <x-spinner />
             <form action="{{ route('event.update', '__ID__') }}" method="POST" id="editeventForm" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 <div class="grid gap-4 mb-4 sm:grid-cols-2">
                     <div>
                         <label for="name"

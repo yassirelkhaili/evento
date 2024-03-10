@@ -55,7 +55,7 @@
                     <dd class="font-light text-gray-500 dark:text-gray-400">events</dd>
                 </div>
                 <div class="flex flex-col items-center justify-center">
-                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">1B+</dt>
+                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{$bookingCount}}</dt>
                     <dd class="font-light text-gray-500 dark:text-gray-400">bookings</dd>
                 </div>
                 @if(auth()->user()->can("manage users"))
