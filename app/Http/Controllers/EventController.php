@@ -41,7 +41,7 @@ class EventController extends Controller
         if ($searchQuery) $query->where('title', 'LIKE', '%' . $searchQuery . '%');
         if ($category) $query->where('category_id', '=', $category);
 
-        $events = $query->paginate(9);
+        $events = $query->orderBy('created_at', 'desc')->where('status', 'published')->paginate(9);
         return view("welcome", ['events' => $events, 'searchQuery' => $searchQuery, 'categories' => $categories]);
     }
 

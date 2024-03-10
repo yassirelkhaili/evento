@@ -13,7 +13,6 @@
         <li>Address: {{$ticket->event->address}}</li>
         <li>Description: {{$ticket->event->description}}</li>
         <li>Category: @if(isset($ticket->event->category)) {{$ticket->event->category->name}} @endif</li>
-        <li>Validation Method: {{$ticket->event->validation_method}}</li>
         <li>TicketId: {{$ticket->uuid}}</li>
     </ul>    
 </body>

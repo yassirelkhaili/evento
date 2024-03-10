@@ -21,7 +21,7 @@ use App\Http\Controllers\CategoryController;
 
 //render routes
 Route::get('/', [EventController::class, 'index'])->name("index");
-Route::get('/', [EventController::class, 'filter'])->name("index.filter");
+Route::get('/filter', [EventController::class, 'filter'])->name("index.filter");
 Route::get("event/show/{id}", [EventController::class, "show"])->name("event.show");
 
 Route::middleware(['auth'])->group(function () {
