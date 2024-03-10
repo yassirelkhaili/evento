@@ -30,8 +30,8 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/bookings/create', [TicketController::class, 'store'])->name('ticket.store');
-    Route::delete('/bookings/{booking}', [TicketController::class, 'store'])->name('ticket.destroy');
-    Route::post('/bookings/download/{booking}', [TicketController::class, 'store'])->name('ticket.download');
+    Route::delete('/bookings/{booking}', [TicketController::class, 'destroy'])->name('ticket.destroy');
+    Route::post('/bookings/download/{booking}', [TicketController::class, 'download'])->name('ticket.download');
     Route::get('/dashboard/bookings', [TicketController::class, 'index'])->name('bookings.index');
 });
 

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateTicketRequest;
 use App\Repositories\EventRepositoryInterface;
 use App\Repositories\CategoryRepositoryInterface;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 class TicketController extends Controller
 {
 
@@ -43,44 +44,27 @@ class TicketController extends Controller
     public function store(Request $request)
     {
         $eventId = $request->input('bookingId');
+        $ticketId = Str::uuid()->toString();
         $event = $this->eventRepository->getById($eventId);
         if (!$event || $event->available_seats <= 0) return redirect()->route('bookings.index')->with('error', 'This event is fully booked');
         $this->eventRepository->update($eventId, ['available_seats', $event->available_seats - 1]);
-        Ticket::create(['user_id' => auth()->user()->id, 'event_id' => $eventId]);
+        Ticket::create(['uuid' => $ticketId,'user_id' => auth()->user()->id, 'event_id' => $eventId]);
         return redirect()->route('bookings.index')->with('success', 'Booking created successfuly');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Ticket $ticket)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Ticket $ticket)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateTicketRequest $request, Ticket $ticket)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        $ticket = Ticket::findOrFail($id);
+        $ticket = Ticket::with('event')->findOrFail($id);
+        $event = $this->eventRepository->getById($ticket->event->id);
+        $this->eventRepository->update($event->id, ['available_seats' => $event->available_seats + 1]);
         $ticket->delete();
         return redirect()->back()->with('success', 'Ticket deleted successfully.');
+    }
+
+    public function download(string $id)
+    {
+        $ticket = Ticket::findOrFail($id); 
+        $pdf = PDF::loadView('pdfs\tickets', ['ticket' => $ticket]);
+        return $pdf->download('event-ticket.pdf');
     }
 }
