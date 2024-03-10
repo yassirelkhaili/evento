@@ -1,6 +1,6 @@
 <!-- Start block -->
 <section class="bg-gray-50 dark:bg-gray-900 pt-8 antialiased">
-    <div class="mx-auto max-w-screen-xl">
+    <div class="mx-auto px-2">
         <!-- Start coding here -->
         <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
             <div class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
