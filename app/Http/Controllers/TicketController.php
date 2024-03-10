@@ -23,7 +23,8 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::all();
+        $userId = auth()->user()->id;
+        $tickets = Ticket::with('event')->where('user_id', $userId)->paginate(10);
         $searchQuery = '';
         return view('dashboard', compact('tickets', 'searchQuery'));
     }
@@ -43,7 +44,9 @@ class TicketController extends Controller
     {
         $eventId = $request->input('bookingId');
         $event = $this->eventRepository->getById($eventId);
-        $ticket = Ticket::create(['user_id' => auth()->user()->id, 'event_id' => $eventId]);
+        if (!$event || $event->available_seats <= 0) return redirect()->route('bookings.index')->with('error', 'This event is fully booked');
+        $this->eventRepository->update($eventId, ['available_seats', $event->available_seats - 1]);
+        Ticket::create(['user_id' => auth()->user()->id, 'event_id' => $eventId]);
         return redirect()->route('bookings.index')->with('success', 'Booking created successfuly');
     }
 
@@ -74,8 +77,10 @@ class TicketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ticket $ticket)
+    public function destroy(string $id)
     {
-        //
+        $ticket = Ticket::findOrFail($id);
+        $ticket->delete();
+        return redirect()->back()->with('success', 'Ticket deleted successfully.');
     }
 }
