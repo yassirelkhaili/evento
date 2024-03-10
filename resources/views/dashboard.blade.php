@@ -43,7 +43,7 @@
         @case("index.categories")
         <x-category-table :categories="$categories" :searchQuery="$searchQuery" />
         @break
-        @case("ticket.index")
+        @case("bookings.index")
         <x-ticket-table :tickets="$tickets" :searchQuery="$searchQuery" />
         @break
     @default

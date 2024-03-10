@@ -3,11 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
-use App\Http\Requests\StoreTicketRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\UpdateTicketRequest;
+use App\Repositories\EventRepositoryInterface;
+use App\Repositories\CategoryRepositoryInterface;
 
 class TicketController extends Controller
 {
+
+    protected EventRepositoryInterface $eventRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
+    public function __construct(EventRepositoryInterface $eventRepository, CategoryRepositoryInterface $categoryRepository)
+    {
+        $this->eventRepository = $eventRepository;
+        $this->categoryRepository = $categoryRepository;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -29,9 +39,12 @@ class TicketController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTicketRequest $request)
+    public function store(Request $request)
     {
-        //
+        $eventId = $request->input('bookingId');
+        $event = $this->eventRepository->getById($eventId);
+        $ticket = Ticket::create(['user_id' => auth()->user()->id, 'event_id' => $eventId]);
+        return redirect()->route('bookings.index')->with('success', 'Booking created successfuly');
     }
 
     /**
