@@ -23,6 +23,7 @@ use App\Http\Controllers\CategoryController;
 Route::get('/', [EventController::class, 'index'])->name("index.welcome");
 Route::get('/filter', [EventController::class, 'filter'])->name("index.filter");
 Route::get("event/show/{id}", [EventController::class, "showSingleEvent"])->name("event.showSingle");
+Route::get("category/show/{id}", [CategoryController::class, "showSingleCategory"])->name("category.showSingle");
 
 Route::middleware(['auth'])->group(function () {
     //profile routes
@@ -55,6 +56,7 @@ Route::middleware(['auth', 'can:manage users'])->group(function () {
     Route::put("dashboard/users/{user}", [UserController::class,"update"])->name("user.update");
     Route::delete("dashboard/users/{user}", [UserController::class,"destroy"])->name("user.destroy");
     Route::get("/dashboard/users/{user}", [UserController::class,"show"])->name("user.show");
+    Route::post('/events/approve/{event}', [EventController::class, 'approve'])->name('event.approve');
 });
 
 require __DIR__ . '/auth.php';

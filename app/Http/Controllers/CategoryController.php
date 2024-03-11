@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
+use App\Repositories\CategoryRepositoryInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CategoryController extends Controller
 {
@@ -32,6 +33,16 @@ class CategoryController extends Controller
         return redirect()->route("index")->with('success','Category created successfuly.');
     }
 
+    public function showSingleCategory(string $id)
+    {
+        try {
+            $category = $this->categoryRepository->getById($id);
+            return response()->json($category, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'event not found. errorcode: ' . $e->getMessage()], 404);
+        }
+    }
+
     /**
      * Display the specified resource.
      */
@@ -54,7 +65,7 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $this->categoryRepository->update($id, $request->input());
-        return redirect()->route("index")->with("success","Category updated successfuly.");
+        return redirect()->route("index.categories")->with("success","Category updated successfuly.");
     }
 
     /**

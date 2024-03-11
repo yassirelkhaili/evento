@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Event;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreEventRequest;
@@ -82,6 +83,13 @@ class EventController extends Controller
         }
     }
 
+    public function approve(string $id) {
+        $event = $this->eventRepository->getById($id);
+        $event->status = 'published';
+        $event->save();
+        return redirect()->route('index.dashboard');
+    }
+
     public function showSingleEvent(string $id) {
         $event = $this->eventRepository->getById($id);
         return view("profile.show", compact("event"));
@@ -136,7 +144,8 @@ class EventController extends Controller
             $eventCount = $this->eventRepository->getEventCount();
             $categories = $this->categoryRepository->getAll();
             $categoryCount = $categories->count();
+            $bookingCount = Ticket::count();
             $userCount = User::count();
-            return view('dashboard', compact('events', 'searchQuery', 'categories', 'eventCount', 'categoryCount', 'userCount'));
+            return view('dashboard', compact('events', 'searchQuery', 'categories', 'eventCount', 'categoryCount', 'userCount', 'bookingCount'));
     }
 }

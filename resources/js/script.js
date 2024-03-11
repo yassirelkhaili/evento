@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    const editPartnerModal = document.getElementById("editPartnerForm");
+    const editPartnerModal = document.getElementById("editcategoryForm");
     const editAdvertModal = document.getElementById("editeventForm");
     const editUserModal = document.getElementById("editUserForm");
 
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //add elements id to form action
     editPartnerModal.action = (editPartnerModal.action).replace('__ID__', id);
     //fetch elements data
-    fetchDataById(id, "/partner/partner/").then((data) => populateModal(data, editPartnerModalInputs)).catch((error) => console.error(error)).finally(() => toggleSpinner(editPartnerModal));
+    fetchDataById(id, "/category/show/").then((data) => populateModal(data, editPartnerModalInputs)).catch((error) => console.error(error)).finally(() => toggleSpinner(editPartnerModal));
     }
 
     if (editAdvertModal) {
