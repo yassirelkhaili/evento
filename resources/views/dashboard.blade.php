@@ -70,6 +70,7 @@
             </div>
         </div>
       </section>
+    </div>
       @if(auth()->user()->can("manage users"))
       <x-events-admin-table :events="$events" :searchQuery="$searchQuery" :categories="$categories"/>
       @else

@@ -47,7 +47,7 @@ class TicketController extends Controller
         $ticketId = Str::uuid()->toString();
         $event = $this->eventRepository->getById($eventId);
         if (!$event || $event->available_seats <= 0) return redirect()->route('bookings.index')->with('error', 'This event is fully booked');
-        $this->eventRepository->update($eventId, ['available_seats', $event->available_seats - 1]);
+        $this->eventRepository->update($eventId, ['available_seats' => $event->available_seats - 1]);
         Ticket::create(['uuid' => $ticketId,'user_id' => auth()->user()->id, 'event_id' => $eventId]);
         return redirect()->route('bookings.index')->with('success', 'Booking created successfuly');
     }
